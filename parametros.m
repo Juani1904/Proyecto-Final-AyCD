@@ -4,7 +4,6 @@
 Yt0 = 45;               % Altura fija de las poleas de izaje en el carro [m]
 Hc = 2.59;              % Altura del container estándar [m]
 Wc = 2.44;              % Ancho del container estándar [m]
-
 Ms = 15000;             % Masa del spreader + headblock (sin container) [kg]
 Mc_max = 50000;         % Masa máxima del container totalmente cargado [kg]
 Mc_min = 2000;          % Masa mínima del container vacío [kg]
