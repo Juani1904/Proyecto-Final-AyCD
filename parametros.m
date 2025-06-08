@@ -1,5 +1,6 @@
 %SCRIPT de almacenamiento de parametros - Propiedades fisicas del sistema
 
+%-----------------------------------------------DATOS CONSIGNA----------------------------------------------------------------------
 %% Datos generales
 Yt0 = 45;               % Altura fija de las poleas de izaje en el carro [m]
 Hc = 2.59;              % Altura del container estándar [m]
@@ -46,3 +47,7 @@ Ttb_Max = 5.0e3;             % Torque máximo del freno de operación cerrado [N
 tautm = 1.0e-3;              % Constante de tiempo del modulador de torque (motor del carro) [s]
 Ttm_Max = 4.0e3;             % Torque máximo de motorización/frenado regenerativo del motor [N*m]
 
+
+%-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
+%% Perfil de obstaculos
+N=ceil(33/Wc);
