@@ -50,4 +50,5 @@ Ttm_Max = 4.0e3;             % Torque máximo de motorización/frenado regenerat
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Perfil de obstaculos
-N=ceil(33/Wc);
+N=ceil(80/Wc);
+dmax=Yt0/2;
