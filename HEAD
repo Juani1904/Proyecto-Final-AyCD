@@ -1,0 +1,87 @@
+[33mcommit 83c45fef4ec73509f9b74392ad25cf8d465f68ab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 22:22:09 2025 -0300
+
+    Elimacion TEST 2
+
+[33mcommit 70f2b2478dc57995f5452aa9ad81a4773d290bbd[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 22:21:09 2025 -0300
+
+    Eliminado TEST
+
+[33mcommit b36fe691549d48618e65d09cb2f3bc411ff6eabd[m[33m ([m[1;32mswitch[m[33m)[m
+Merge: 96f5636 7ce1460
+Author: Juan Ignacio Luna Casabene <95891913+Juani1904@users.noreply.github.com>
+Date:   Sat May 10 22:03:03 2025 -0300
+
+    Merge pull request #1 from Juani1904/Branch_2
+    
+    Branch 2
+
+[33mcommit 7ce1460729f2637d209e72af96947cead1195d5d[m[33m ([m[1;31morigin/Branch_2[m[33m, [m[1;32mBranch_2[m[33m)[m
+Merge: a002791 f9d2697
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:41:37 2025 -0300
+
+    Merge branch 'Branch_1' into Branch_2
+
+[33mcommit a002791e4ea421df7b7778d130b9003ebd8a3937[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:39:40 2025 -0300
+
+    TESTING BRANCH 2 MERGE
+
+[33mcommit f9d2697afac0f82cb04ec7ebe5f7af2fe4a5d070[m[33m ([m[1;32mBranch_1[m[33m)[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:35:48 2025 -0300
+
+    Commit BRANCH 1
+
+[33mcommit 96f5636578fb86b36ac1ba1e1429cf3ceac321c4[m[33m ([m[1;32mBranch_3[m[33m)[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:29:32 2025 -0300
+
+    Eliminación
+
+[33mcommit 0ae86f80f9e6c8e7eee5bfd7d7a93960162606c9[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:28:48 2025 -0300
+
+    asdasd
+
+[33mcommit fc94dd4b07403627b9b9ef76522803a4c006aeb4[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:26:12 2025 -0300
+
+    asdasd
+
+[33mcommit 8ee5169012bf99f249b52b941b51412836915643[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 21:22:25 2025 -0300
+
+    asdasd
+
+[33mcommit d58f620c27e6f6b2c7665303638e280551a99617[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 20:33:56 2025 -0300
+
+    TEST 3
+
+[33mcommit 329e301a9bbb992c3433130a9b7adb7a30ad9af7[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 20:24:41 2025 -0300
+
+    TEST 2
+
+[33mcommit 3e5c3619a7c1672e6acab16c1568f1754e3c3639[m
+Author: Juani1904 <juanicei99@gmail.com>
+Date:   Sat May 10 20:12:37 2025 -0300
+
+    Push Test
+
+[33mcommit 046a8bd3bf3ac4a9a4737dda08a97c36ae2b43e7[m
+Author: Juan Ignacio Luna Casabene <95891913+Juani1904@users.noreply.github.com>
+Date:   Sat May 10 19:34:53 2025 -0300
+
+    Initial commit
