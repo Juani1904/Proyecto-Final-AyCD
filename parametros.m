@@ -30,11 +30,17 @@ bhb = 100e6;                  % Coef. de fricción viscosa del freno de operaci�
 Thb_Max = 50.0e3;             % Torque máximo del freno de operación cerrado [N*m]
 tauhm = 1.0e-3;               % Constante de tiempo del modulador de torque en el motor [s]
 Thm_Max = 20.0e3;             % Torque máximo de motorización/frenado regenerativo del motor [N*m]
+vh_max_cc = 1.5;
+vh_max_sc = 3;
+ah_max = 0.75;
+
+
 %% Carro y cable de acero (wirerope) de CARRO equivalente
 Mt = 30000;                  % Masa equivalente del carro y componentes asociados [kg]
 bt = 90.0;                   % Coef. de fricción mecánica viscosa equivalente del carro [N/(m/s)]
 Ktw = 480e3;                 % Rigidez equivalente del cable tensado del carro [N/m]
 btw = 3.0e3;                 % Fricción interna total del cable tensado del carro [N/(m/s)]
+
 %% Accionamiento de Traslación del Carro
 rtd = 0.50;                  % Radio primitivo del tambor (1 sola corrida de cable) [m]
 Jtd = 1200;                  % Momento de inercia del eje lento (tambor y salida de reductora) [kg*m^2]
@@ -46,7 +52,8 @@ btb = 5.0e6;                 % Fricción viscosa del freno de operación cerrado
 Ttb_Max = 5.0e3;             % Torque máximo del freno de operación cerrado [N*m]
 tautm = 1.0e-3;              % Constante de tiempo del modulador de torque (motor del carro) [s]
 Ttm_Max = 4.0e3;             % Torque máximo de motorización/frenado regenerativo del motor [N*m]
-
+vt_max = 4;
+at_max = 0.8;
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Perfil de obstaculos
