@@ -59,3 +59,20 @@ at_max = 0.8;
 %% Perfil de obstaculos
 N=ceil(80/Wc);
 dmax=Yt0/2;
+%% CN2 - Datos generales
+T_s2=0.001; %Tiempo muestreo control nivel 2
+
+%% CN2 - Controlador de movimiento - Carro
+p1=0;
+p2=-bt/Mt;
+w_pos=4*p2;
+n=2;
+J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
+b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
+b_ta = (n * w_pos * rtd * Jeqt) / it - (rtd / it) * beqt;
+K_tsa = (n * w_pos^2 * Jeqt * rtd) / it;
+K_tsia = (w_pos^3 * Jeqt * rtd) / it;
+
+
+%% CN2 - Controlador de movimiento - Izaje
+%% CN2 - Controlador de movimiento - Oscilacion Carga
