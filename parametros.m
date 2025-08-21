@@ -82,3 +82,15 @@ p2_h=-b_eqh/J_eqh;
 w_pos_h=6*p2_h;
 n_h=2;
 %% CN2 - Controlador de movimiento - Oscilacion Carga
+
+%% CN2 -Modulador de Torque equivalente - Motor-Drive Izaje
+A_hm=-1/tauhm;
+B_hm= 1/tauhm;
+C_hm= 1;
+D_hm= 0;
+
+%% CN2 -Modulador de Torque equivalente - Motor-Drive Carro
+A_tm=-1/tautm;
+B_tm= 1/tautm;
+C_tm= 1;
+D_tm= 0;
