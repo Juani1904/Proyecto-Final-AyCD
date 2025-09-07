@@ -56,9 +56,12 @@ vt_max = 4;
 at_max = 0.8;
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
-%% Perfil de obstaculos
+%% Perfil de obstaculos (Entorno)
 N=ceil(80/Wc);
-dmax=Yt0/2;
+dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
+step = Hc; %Paso de apilado
+valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
+y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
 %% CN2 - Datos generales
 T_s2=0.001; %Tiempo muestreo control nivel 2
 
