@@ -56,6 +56,9 @@ vt_max = 4;
 at_max = 0.8;
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
+%% Asignacion aleatoria de la masa del carro (Entorno)
+%Mc_Xvect=
+Mc_X=25000;
 %% Perfil de obstaculos (Entorno)
 N=ceil(80/Wc);
 dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
