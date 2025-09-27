@@ -33,7 +33,7 @@ Thm_Max = 20.0e3;             % Torque máximo de motorización/frenado regenera
 vh_max_cc = 1.5;
 vh_max_sc = 3;
 ah_max = 0.75;
-
+M_x = 25000;
 
 %% Carro y cable de acero (wirerope) de CARRO equivalente
 Mt = 30000;                  % Masa equivalente del carro y componentes asociados [kg]
