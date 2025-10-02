@@ -109,11 +109,14 @@ x_td_ini = 0;
 %En subs_tras_carro
 dx_t_ini=0;
 x_t_ini=0;
-%En acc_izaje
-dl_h_ini=0;
-l_h_ini=0;
+
 %En subs_carga
 dx_l_ini=0;
 x_l_ini=0;
 dy_l_ini=0;
 y_l_ini=15;
+
+%En acc_izaje
+dl_h_ini=0;
+l_h_ini=Yt0-y_l_ini;
+
