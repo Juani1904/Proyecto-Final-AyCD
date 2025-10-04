@@ -65,6 +65,7 @@ dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
 step = Hc; %Paso de apilado
 valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
 y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
+y0(15)=0; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
 %% CN2 - Datos generales
 T_s2=0.001; %Tiempo muestreo control nivel 2
 
@@ -114,7 +115,7 @@ x_t_ini=0;
 dx_l_ini=0;
 x_l_ini=0;
 dy_l_ini=0;
-y_l_ini=15;
+y_l_ini=30;
 
 %En acc_izaje
 dl_h_ini=0;

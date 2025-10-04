@@ -34,7 +34,7 @@ function setup(block)
     
     %Primeramente determinamos el numero de puertos del bloque
     %INPUTS
-    block.NumInputPorts  = 4;
+    block.NumInputPorts  = 5;
     %OUTPUTS
     block.NumOutputPorts = 0;
 
@@ -86,11 +86,11 @@ function setup(block)
     % block.InputPort(6).SamplingMode = 'Sample';
     % block.InputPort(6).DirectFeedthrough = true;
     % 
-    % block.InputPort(7).Dimensions  = [1 24]; % N_containers
-    % block.InputPort(7).DatatypeID  = 0;      % double
-    % block.InputPort(7).Complexity  = 'Real';
-    % block.InputPort(7).SamplingMode = 'Sample';
-    % block.InputPort(7).DirectFeedthrough = true;
+    block.InputPort(5).Dimensions  = [1 32]; % N_containers
+    block.InputPort(5).DatatypeID  = 0;      % double
+    block.InputPort(5).Complexity  = 'Real';
+    block.InputPort(5).SamplingMode = 'Sample';
+    block.InputPort(5).DirectFeedthrough = true;
     % 
     % block.InputPort(8).Dimensions  = [1 22]; % AlturasLineasTransicion
     % block.InputPort(8).DatatypeID  = 0;      % double
@@ -540,7 +540,7 @@ function Outputs(block)
   theta_l = block.InputPort(4).Data; %[rad]
   % clock = block.InputPort(13).Data;
   % actuador_TWISLOCKS = block.InputPort(6).Data;
-  % N_containers = block.InputPort(7).Data;
+  N_containers = block.InputPort(5).Data;
   % AlturasLineasTransicion = block.InputPort(8).Data;
   % MODO_MANUAL = block.InputPort(9).Data;
   % CONTROL_DE_BALANCEO = block.InputPort(10).Data;
@@ -567,7 +567,7 @@ function Outputs(block)
 
     fig = getappdata(0, 'myFigHandle'); % Retrieve the figure handle
 
-    %N_containers_anterior = N_containers; %zeros(1,24);
+    N_containers_anterior = N_containers; %zeros(1,24);
   end
 
   %% ACTUALIZACIÓN DE LOS DIBUJOS MÓVILES:
@@ -676,57 +676,57 @@ function Outputs(block)
     % end
 
     %% 
-    % drawnow limitrate; % drawnow
-    % 
-    % if ~isequal(N_containers, N_containers_anterior) % Solo si se modifica algún container:
-    %   % changed_index = find(N_containers ~= N_containers_anterior);%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % 
-    %   %% CONTAINERS EN REPOSO:
-    %   % En los Carriles de los Camiones:
-    %   for i=1:5
-    %     if(N_containers(i) > 0)
-    %       ud.containers_camiones_handles(1,i).Visible = 'on';
-    %     else
-    %       ud.containers_camiones_handles(1,i).Visible = 'off';
-    %     end
-    %   end
-    %   % En los Bordes (Paredes) del Barco:
-    %   for i=1:7
-    %       % Lado izquierdo.
-    %       if (i <= N_containers(6))
-    %         ud.containers_barco_handles(1, i+7).Visible = 'on';
-    %       else
-    %         ud.containers_barco_handles(1, i+7).Visible = 'off';
-    %       end
-    %       % Lado derecho
-    %       if (i <= N_containers(24))
-    %         ud.containers_barco_handles(19, i+7).Visible = 'on';
-    %       else
-    %         ud.containers_barco_handles(19, i+7).Visible = 'off';
-    %       end
-    %   end
-    %   % En la Parte Central del Barco:
-    %   for j=2:18
-    %     for i=1:14
-    %       if (i <= N_containers(5+j))
-    %         ud.containers_barco_handles(j, i).Visible = 'on';
-    %       else
-    %         ud.containers_barco_handles(j, i).Visible = 'off';
-    %       end
-    %     end
-    %   end
-    % 
-    %   %% LÍNEAS TRANSICIÓN MODO MANUAL/AUTO:
-    %   for i=1:(length(AlturasLineasTransicion)-1)
-    %       % Líneas Horizontales:
-    %       ud.lineas_horizontales_handles(i).YData = [AlturasLineasTransicion(i)
-    %                                                  AlturasLineasTransicion(i)];
-    %       % Líneas Verticales:
-    %       ud.lineas_verticales_handles(i).YData = [AlturasLineasTransicion(i)
-    %                                                  AlturasLineasTransicion(i+1)];
-    %   end
-    % end
-    % N_containers_anterior = N_containers;
+    drawnow limitrate; % drawnow
+
+    if ~isequal(N_containers, N_containers_anterior) % Solo si se modifica algún container:
+      % changed_index = find(N_containers ~= N_containers_anterior);%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+      %% CONTAINERS EN REPOSO:
+      % En los Carriles de los Camiones:
+      for i=1:5
+        if(N_containers(i) > 0)
+          ud.containers_camiones_handles(1,i).Visible = 'on';
+        else
+          ud.containers_camiones_handles(1,i).Visible = 'off';
+        end
+      end
+      % En los Bordes (Paredes) del Barco:
+      for i=1:7
+          % Lado izquierdo.
+          if (i <= N_containers(6))
+            ud.containers_barco_handles(1, i+7).Visible = 'on';
+          else
+            ud.containers_barco_handles(1, i+7).Visible = 'off';
+          end
+          % Lado derecho
+          if (i <= N_containers(24))
+            ud.containers_barco_handles(19, i+7).Visible = 'on';
+          else
+            ud.containers_barco_handles(19, i+7).Visible = 'off';
+          end
+      end
+      % En la Parte Central del Barco:
+      for j=2:18
+        for i=1:14
+          if (i <= N_containers(5+j))
+            ud.containers_barco_handles(j, i).Visible = 'on';
+          else
+            ud.containers_barco_handles(j, i).Visible = 'off';
+          end
+        end
+      end
+
+      %% LÍNEAS TRANSICIÓN MODO MANUAL/AUTO:
+      for i=1:(length(AlturasLineasTransicion)-1)
+          % Líneas Horizontales:
+          ud.lineas_horizontales_handles(i).YData = [AlturasLineasTransicion(i)
+                                                     AlturasLineasTransicion(i)];
+          % Líneas Verticales:
+          ud.lineas_verticales_handles(i).YData = [AlturasLineasTransicion(i)
+                                                     AlturasLineasTransicion(i+1)];
+      end
+    end
+    N_containers_anterior = N_containers;
   else
     return;
   end
