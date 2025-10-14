@@ -72,13 +72,15 @@ T_s2=0.001; %Tiempo muestreo control nivel 2
 %% CN2 - Controlador de movimiento - Carro
 p1_t=0;
 p2_t=-bt/Mt;
-w_pos_t=4*p2_t;
-n_t=2;
-J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
-b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
-b_ta = (n_t * w_pos_t * rtd * J_eqt) / it - (rtd / it) * b_eqt;
+w_pos_t=5*p2_t;
+n_t=2.5; 
+% J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
+% b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
+J_eqt = Mt + Jtm_ttb * ((it^2) / rtd^2) + (Jtd/rtd^2)+Ms+M_x;
+b_eqt = btm *((it^2) / rtd^2)+  btd/(rtd^2) + bt;
+b_ta = ((n_t * w_pos_t * rtd * J_eqt) / it - (rtd / it) * b_eqt);
 K_tsa = (n_t * w_pos_t^2 * J_eqt * rtd) / it;
-K_tsia = (w_pos_t^3 * J_eqt * rtd) / it;
+K_tsia = -(w_pos_t^3 * J_eqt * rtd) / it;
 
 
 %% CN2 - Controlador de movimiento - Izaje
