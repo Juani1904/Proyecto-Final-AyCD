@@ -72,7 +72,7 @@ T_s2=0.001; %Tiempo muestreo control nivel 2
 %% CN2 - Controlador de movimiento - Carro
 p1_t=0;
 p2_t=-bt/Mt;
-w_pos_t=5*p2_t;
+w_pos_t=10*p2_t;
 n_t=2.5; 
 % J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
 % b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
