@@ -1,5 +1,5 @@
 %SCRIPT de almacenamiento de parametros - Propiedades fisicas del sistema
-
+syms b_ta K_tsa K_tsia
 %-----------------------------------------------DATOS CONSIGNA----------------------------------------------------------------------
 %% Datos generales
 Yt0 = 45;               % Altura fija de las poleas de izaje en el carro [m]
@@ -70,17 +70,41 @@ y0(15)=0; %Setea en cero la altura correspondiente al borde entre el agua y el m
 T_s2=0.001; %Tiempo muestreo control nivel 2
 
 %% CN2 - Controlador de movimiento - Carro
-p1_t=0;
-p2_t=-bt/Mt;
-w_pos_t=10*p2_t;
-n_t=2.5; 
-% J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
-% b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
-J_eqt = Mt + Jtm_ttb * ((it^2) / rtd^2) + (Jtd/rtd^2)+Ms+M_x;
-b_eqt = btm *((it^2) / rtd^2)+  btd/(rtd^2) + bt;
-b_ta = ((n_t * w_pos_t * rtd * J_eqt) / it - (rtd / it) * b_eqt);
-K_tsa = (n_t * w_pos_t^2 * J_eqt * rtd) / it;
-K_tsia = -(w_pos_t^3 * J_eqt * rtd) / it;
+% p1_t=0;
+% p2_t=bt/Mt;
+% w_pos_t=500*p2_t;
+% n_t=2.5; 
+% % J_eqt = Jtm_ttb + (it^2 * Jtd) / rtd^2;
+% % b_eqt = btm + (it^2 * btd) / rtd^2 + bt;
+% J_eqt = Mt + Jtm_ttb * ((it^2) / rtd^2) + (Jtd/rtd^2)+Ms+M_x;
+% b_eqt = btm *((it^2) / rtd^2)+  btd/(rtd^2) + bt;
+% b_ta = ((n_t * w_pos_t * rtd * J_eqt) / it) - ((rtd / it) * b_eqt);
+% %K_tsa = (n_t * w_pos_t^2 * J_eqt * rtd) / it;
+% K_tsa = w_pos_t * b_ta;
+% %K_tsia = (w_pos_t^3 * J_eqt * rtd) / it;
+% K_tsia = w_pos_t * K_tsa;
+
+J_eqt = Jtm_ttb*it^2/rtd^2 + Jtd/rtd^2 + Ms+M_x;   
+b_eqt = btm*it^2/rtd^2 + btd/rtd^2;
+
+coef_t = [rtd*(J_eqt+Mt)/it; rtd*(b_eqt+bt)/it; 0];
+polos_t = roots(coef_t)
+
+w_pos_t = 10*polos_t(2)
+n_t = 2.9;
+
+a = (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it);
+b = K_tsa/(rtd*(Mt+J_eqt)/it);
+c = K_tsia/(rtd*(Mt+J_eqt)/it);
+G_tranf = [a b c];
+polin_sint_serie = [n_t*w_pos_t  n_t*w_pos_t^2  w_pos_t^3];
+
+soluc = solve([G_tranf==polin_sint_serie], [b_ta, K_tsa, K_tsia]);
+b_ta = -double(soluc.b_ta)
+K_tsa = double(soluc.K_tsa)
+K_tsia = -double(soluc.K_tsia)
+
+roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+J_eqt)/it); K_tsia/(rtd*(Mt+J_eqt)/it)])
 
 
 %% CN2 - Controlador de movimiento - Izaje
