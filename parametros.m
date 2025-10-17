@@ -1,5 +1,5 @@
 %SCRIPT de almacenamiento de parametros - Propiedades fisicas del sistema
-syms b_ta K_tsa K_tsia
+syms b_ta K_tsa K_tsia b_ha K_hsa K_hsia
 %-----------------------------------------------DATOS CONSIGNA----------------------------------------------------------------------
 %% Datos generales
 Yt0 = 45;               % Altura fija de las poleas de izaje en el carro [m]
@@ -84,7 +84,7 @@ T_s2=0.001; %Tiempo muestreo control nivel 2
 % %K_tsia = (w_pos_t^3 * J_eqt * rtd) / it;
 % K_tsia = w_pos_t * K_tsa;
 
-J_eqt = Jtm_ttb*it^2/rtd^2 + Jtd/rtd^2 + Ms+M_x;   
+J_eqt = Jtm_ttb*it^2/rtd^2 + Jtd/rtd^2 + Ms + M_x;   
 b_eqt = btm*it^2/rtd^2 + btd/rtd^2;
 
 coef_t = [rtd*(J_eqt+Mt)/it; rtd*(b_eqt+bt)/it; 0];
@@ -96,13 +96,13 @@ n_t = 2.9;
 a = (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it);
 b = K_tsa/(rtd*(Mt+J_eqt)/it);
 c = K_tsia/(rtd*(Mt+J_eqt)/it);
-G_tranf = [a b c];
-polin_sint_serie = [n_t*w_pos_t  n_t*w_pos_t^2  w_pos_t^3];
+Gt_tranf = [a b c];
+polin_sint_serie_t = [n_t*w_pos_t  n_t*w_pos_t^2  w_pos_t^3];
 
-soluc = solve([G_tranf==polin_sint_serie], [b_ta, K_tsa, K_tsia]);
-b_ta = -double(soluc.b_ta)
-K_tsa = double(soluc.K_tsa)
-K_tsia = -double(soluc.K_tsia)
+soluct = solve([Gt_tranf==polin_sint_serie_t], [b_ta, K_tsa, K_tsia]);
+b_ta = -double(soluct.b_ta)
+K_tsa = double(soluct.K_tsa)
+K_tsia = -double(soluct.K_tsia)
 
 roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+J_eqt)/it); K_tsia/(rtd*(Mt+J_eqt)/it)])
 
@@ -114,6 +114,29 @@ p1_h=0;
 p2_h=-b_eqh/J_eqh;
 w_pos_h=6*p2_h;
 n_h=2;
+
+J_eqh = (1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);  
+b_eqh = (1/rhd)*(2*bhd+2*bhm*(ih)^2);
+
+coef_h = [-(1/ih)*(J_eqh+M_x*rhd/2); -b_eqh/ih; 0];
+polos_h = roots(coef_h)
+
+w_pos_h = 10*polos_h(2)
+n_h = 2;
+
+d = ih*(b_eqh/ih - b_ha)/(rhd*M_x/2+J_eqh);
+e = -K_hsa*ih/(rhd*M_x/2+J_eqh);
+f = -K_hsia*ih/(rhd*M_x+J_eqh);
+Gh_tranf = [d e f];
+polin_sint_serie_h = [n_h*w_pos_h  n_h*w_pos_h^2  w_pos_h^3];
+
+soluch = solve([Gh_tranf==polin_sint_serie_h], [b_ha, K_hsa, K_hsia]);
+b_ha = -double(soluch.b_ha)
+K_hsa = double(soluch.K_hsa)
+K_hsia = -double(soluch.K_hsia)
+
+roots([1; ih*(b_eqh/ih - b_ha)/(rhd*M_x/2+J_eqh); -K_hsa*ih/(rhd*M_x/2+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)])
+
 %% CN2 - Controlador de movimiento - Oscilacion Carga
 
 %% CN2 -Modulador de Torque equivalente - Motor-Drive Izaje
