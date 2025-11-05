@@ -108,12 +108,12 @@ roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+
 
 
 %% CN2 - Controlador de movimiento - Izaje
-J_eqh=(1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);
-b_eqh=(1/rhd)*(2*bhd+2*bhm*(ih)^2);
-p1_h=0;
-p2_h=-b_eqh/J_eqh;
-w_pos_h=6*p2_h;
-n_h=2;
+% J_eqh=(1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);
+% b_eqh=(1/rhd)*(2*bhd+2*bhm*(ih)^2);
+% p1_h=0;
+% p2_h=-b_eqh/J_eqh;
+% w_pos_h=6*p2_h;
+% n_h=2;
 
 J_eqh = (1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);  
 b_eqh = (1/rhd)*(2*bhd+2*bhm*(ih)^2);
@@ -135,9 +135,10 @@ b_ha = -double(soluch.b_ha)
 K_hsa = double(soluch.K_hsa)
 K_hsia = -double(soluch.K_hsia)
 
-roots([1; ih*(b_eqh/ih - b_ha)/(rhd*M_x/2+J_eqh); -K_hsa*ih/(rhd*M_x/2+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)])
+roots([1; ih*((b_eqh/ih) - b_ha)/((rhd*M_x/2)+J_eqh); -K_hsa*ih/((rhd*M_x/2)+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)])
 
 %% CN2 - Controlador de movimiento - Oscilacion Carga
+
 
 %% CN2 -Modulador de Torque equivalente - Motor-Drive Izaje
 A_hm=-1/tauhm;
