@@ -153,6 +153,13 @@ C_tm= 1;
 D_tm= 0;
 
 
+%% CN1 - Datos generales
+T_s1=0.02; %Tiempo muestreo control nivel 2
+Fhw_min=1;
+whm_min=10;
+wtm_min=10;
+xt_ref=-14;
+
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0; 
