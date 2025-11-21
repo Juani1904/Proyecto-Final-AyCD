@@ -155,10 +155,17 @@ D_tm= 0;
 
 %% CN1 - Datos generales
 T_s1=0.02; %Tiempo muestreo control nivel 2
+dt=T_s1;
 Fhw_min=1;
 whm_min=10;
 wtm_min=10;
-xt_ref=-14;
+xt_ref=-14; %ya n   o la toma de aca
+dxt_max=4;
+v_t_max=dxt_max;
+v_t_max_2=dxt_max;
+a_t_max=0.75;
+xx_c0 = -30:0.01:50;
+a_l_max=0.75;
 
 %% Condiciones Iniciales
 %En subs_acc_carro
