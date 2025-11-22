@@ -43,53 +43,101 @@ Gc = Kp+Kd*s;
 
 % Selección de salida y vector que representa la acción de delta-theta
 C = [0 1 0 0];            % salida y = delta v_t
-a_theta = A(:,3);        % influencia de delta theta como "entrada"
+a_theta = A0(:,3);        % influencia de delta theta como "entrada"
 
 %Para encontrar la funcion de transferencia
 SI_A0 = s*eye(4) - A0;
-Gp = simplify( C * inv(SI_A0) * a_theta );  % TF de la planta
+Gp = simplify( C * inv(SI_A0)*a_theta );  % TF de la planta
 
 % Separar numerador y denominador simbólicos (opcional)
-[numG, denG] = numden(Gp);
-numG = simplify(expand(numG));
-denG = simplify(expand(denG));
+% [numG, denG] = numden(Gp);
+% numG = simplify(expand(numG));
+% denG = simplify(expand(denG));
 
 Gcb = Gp/(1+Gc*Gp);
 Gcb = simplify(Gcb);
-[numGcb, denGcb] = numden(Gcb);
-numGcb = simplify(expand(numGcb));
+[~, denGcb] = numden(Gcb);
 denGcb = simplify(expand(denGcb));
 
 %% Diseño por amortiguamiento crítico
-syms wn alpha beta
+syms wn
 
 % Polinomio dominante de segundo orden crítico
 D_dom = s^2 + 2*wn*s + wn^2;
 
 % Polos no dominantes (rápidos)
+alpha = 5*wn;
+beta = 6*wn;
 D_des = expand(D_dom * (s + alpha) * (s + beta));
 
 % Polinomio del lazo cerrado
 D_lc = denGcb;
 
-% Igualación de coeficientes
-eqs = coeffs(expand(D_lc - D_des), s) == 0;
+% % Igualación de coeficientes
+% Pdiff = (expand(D_lc - D_des));
+% coeffs_vec = coeffs(Pdiff, s);
+% eqs = coeffs_vec == 0;
 
-% Resolver simbólicamente Kp y Kd
-sol = solve(eqs, [Kp Kd], 'Real', true);
+% Forma robusta: extraer polinomio en vector
+[~,D_des_p] = numden(D_des);
+poly_des = expand(D_des_p);
+poly_lc  = expand(D_lc);
 
+% Igualación por coeficientes (grado 4 -> 5 ecuaciones)
+coeffs_lc = coeffs(poly_des,s,'All');
+coeffs_des = coeffs(poly_des, s, 'All');
+
+% alinear longitudes rellenando con ceros si es necesario
+nL = length(coeffs_lc); nD = length(coeffs_des);
+n = max(nL, nD);
+coeffs_lc = [zeros(1,n-nL), coeffs_lc];
+coeffs_des = [zeros(1,n-nD), coeffs_des];
+
+% formar sistema de ecuaciones (vectorial)
+eqs = coeffs_lc - coeffs_des;
+eqs = simplify(eqs);           % ecuaciones simbólicas
+
+% Resolver simbólicamente Kp, Kd, wn
+sol = solve(eqs, [Kp Kd wn], 'Real', true, 'IgnoreAnalyticConstraints', true);
+
+% recoger soluciones posibles
+wn_sym = sol.wn;
 Kp_sym = sol.Kp;
 Kd_sym = sol.Kd;
 
-%% Evaluación numérica
-% Definición de parámetros deseados
-wn_val    = 4;               % ejemplo
-alpha_val = 5*wn_val;
-beta_val  = 6*wn_val;
+% Kp = double(subs(Kp_sym, [wn alpha beta], [wn_val alpha_val beta_val]));
+% Kd = double(subs(Kd_sym, [wn alpha beta], [wn_val alpha_val beta_val]));
 
-Kp = double(subs(Kp_sym, [wn alpha beta], [wn_val alpha_val beta_val]));
-Kd = double(subs(Kd_sym, [wn alpha beta], [wn_val alpha_val beta_val]));
+% Si solve devuelve múltiples soluciones, filtrar:
+found = false;
+Kp = NaN; Kd = NaN; wn = NaN;
+    for i = 1:length(wn_sym)
+        try
+            wn_i = double(wn_sym(i));
+            Kp_i = double(Kp_sym(i));
+            Kd_i = double(Kd_sym(i));
+        catch
+            continue;
+        end
+        if ~isreal(wn_i) || wn_i <= 0 || ~isreal(Kp_i) || ~isreal(Kd_i)
+            continue;
+        end
+        % comprobar estabilidad del lazo cerrado
+        poly_lc_sub = double(subs(poly_lc, {Kp,Kd,wn}, {Kp_i,Kd_i,wn_i}));
+        % opcional: comprobar raices todas en LHP
+        coeff_vec = sym2poly(poly_lc_sub);
+        if isempty(coeff_vec)
+            continue;
+        end
+        rts = roots(coeff_vec);
+        if all(real(rts) < 0)
+            Kp = Kp_i; Kd = Kd_i; wn = wn_i;
+            found = true;
+        end
+    end
 
-wn = wn_val;   % se devuelve para referencia
+    if ~found
+        warning('No se encontró solución válida para Kp,Kd,wn con los criterios dados.');
+    end
 
 end
