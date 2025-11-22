@@ -164,7 +164,7 @@ dxt_max=4;
 v_t_max=dxt_max;
 v_t_max_2=dxt_max;
 a_t_max=0.75;
-xx_c0 = -30:0.01:50;
+xx_c0 =-30:0.01:50;
 a_l_max=0.75;
 
 %% Condiciones Iniciales
