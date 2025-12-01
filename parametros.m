@@ -14,7 +14,7 @@ Kcy = 1.8e9;            % Rigidez de compresión por contacto vertical [N/m]
 bcy = 10.0e6;           % Fricción interna (amortiguamiento vertical) [N/(m/s)]
 bcx = 1.0e6;            % Fricción de arrastre horizontal por contacto [N/(m/s)]
 %% Cable de acero (wirerope) de IZAJE equivalente - Parametros unitarios
-kwu = 236e6; h           % Rigidez unitaria a tracción del cable de izaje [N/m]
+kwu = 236e6;           % Rigidez unitaria a tracción del cable de izaje [N/m]
 bwu = 150;              % Fricción interna unitaria a tracción del cable [N/(m/s)]
 Lh0=110;                % Longitud de despliegue fijo del wirerope de izaje (Tambor-Extremo fijo), en adicion a las 2 partes colgantes variable lh(t)
 %% Accionamiento del Sistema de Izaje
