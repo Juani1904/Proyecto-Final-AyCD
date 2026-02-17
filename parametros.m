@@ -60,12 +60,122 @@ at_max = 0.8;
 %Mc_Xvect=
 Mc_X=25000;
 %% Perfil de obstaculos (Entorno)
-N=ceil(80/Wc);
-dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
-step = Hc; %Paso de apilado
-valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
-y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
-y0(15)=0; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
+% N=ceil(80/Wc);
+% dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
+% step = Hc; %Paso de apilado
+% valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
+% y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
+% y0(15)=0; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
+
+% Generacion de perfil de obstaculos para apilamiento de containers
+% Muelle a la izquierda (contenores aislados, llegada por camiones)
+% Barco a la derecha (apilamiento por bloques / mesetas)
+
+N = ceil(80/Wc);
+dmax = ceil(Yt0/2);
+step = Hc;
+
+% Indice del borde agua–muelle
+idx_borde = ceil(30/Wc);
+
+% Definicion de zonas
+quay_idx = 1:(idx_borde-1);      % muelle (izquierda)
+ship_idx = (idx_borde+1):N;      % barco (derecha)
+
+% Alturas maximas por zona (en niveles discretos)
+maxShip = max(2, floor(0.90*dmax/step));
+maxQuay = max(1, floor(0.60*dmax/step));
+
+% Parametros de correlacion espacial
+Lship = 4;   % bloques mas largos en barco
+Lquay = 2;   % menor correlacion en muelle
+
+% Señal correlacionada simple
+corrSignal = @(n,L) filter(ones(1,max(1,L))/max(1,L), 1, randn(1,n));
+
+% Normalizacion suave a [0,1] para evitar extremos
+to01 = @(z) max(0, min(1, 0.5 + 0.20*z));
+
+% ----- BARCO: apilamiento por bloques -----
+zShip = corrSignal(numel(ship_idx), Lship);
+uShip = to01(zShip);
+
+gammaShip = 1.6;    % controla sesgo hacia alturas medias
+lvlShip = round((uShip.^(1/gammaShip)) * maxShip);
+
+% Suavizado adicional para generar mesetas
+lvlShip = round(filter([1 2 3 2 1]/9, 1, lvlShip));
+lvlShip = max(0, min(maxShip, lvlShip));
+
+% ----- MUELLE: contenedores aislados -----
+zQuay = corrSignal(numel(quay_idx), Lquay);
+uQuay = to01(zQuay);
+
+gammaQuay = 2.4;    % mayor sesgo a alturas bajas
+lvlQuay = round((uQuay.^(1/gammaQuay)) * maxQuay);
+lvlQuay = max(0, min(maxQuay, lvlQuay));
+
+% Pequeña irregularidad vertical
+jitterProb = 0.10;
+jitter = (rand(size(lvlQuay)) < jitterProb) .* (randi(3, size(lvlQuay)) - 2);
+lvlQuay = max(0, min(maxQuay, lvlQuay + jitter));
+
+% Mascara de ocupacion para generar stacks aislados
+p_single = 0.12;    % stacks individuales
+p_pair   = 0.03;    % pares ocasionales
+
+nq = numel(lvlQuay);
+mask = false(1, nq);
+
+i = 1;
+while i <= nq
+    r = rand;
+    if r < p_pair && i < nq
+        mask(i) = true;
+        mask(i+1) = true;
+        i = i + 3;      % dejo un hueco para evitar bloques largos
+    elseif r < (p_pair + p_single)
+        mask(i) = true;
+        i = i + 2;      % dejo un hueco
+    else
+        i = i + 1;
+    end
+end
+
+lvlQuay(~mask) = 0;
+
+% Evito triples consecutivos dejando solo el central
+for k = 2:(nq-1)
+    if lvlQuay(k)>0 && lvlQuay(k-1)>0 && lvlQuay(k+1)>0
+        lvlQuay(k-1) = 0;
+        lvlQuay(k+1) = 0;
+    end
+end
+
+% ----- Construccion del perfil final -----
+y0 = zeros(1, N);
+y0(quay_idx) = lvlQuay * step;
+y0(ship_idx) = lvlShip * step;
+
+% Altura cero en el borde agua–muelle
+y0(idx_borde) = 0;
+
+% Limite al salto maximo entre columnas para evitar picos no realistas
+maxStepJump = 2*step;
+for k = 2:N
+    if y0(k) > y0(k-1) + maxStepJump
+        y0(k) = y0(k-1) + maxStepJump;
+    elseif y0(k) < y0(k-1) - maxStepJump
+        y0(k) = y0(k-1) - maxStepJump;
+    end
+end
+
+y0(idx_borde) = 0;
+
+
+
+
+
 %% CN2 - Datos generales
 T_s2=0.001; %Tiempo muestreo control nivel 2
 
@@ -170,16 +280,17 @@ a_l_max=0.75;
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0; 
-x_td_ini = 0;
+x_td_ini = 25;
+
 %En subs_tras_carro
 dx_t_ini=0;
-x_t_ini=0;
+x_t_ini=x_td_ini;
 
 %En subs_carga
 dx_l_ini=0;
-x_l_ini=0;
+x_l_ini=x_td_ini;
 dy_l_ini=0;
-y_l_ini=30;
+y_l_ini=12;
 
 %En acc_izaje
 dl_h_ini=0;
