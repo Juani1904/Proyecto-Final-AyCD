@@ -290,7 +290,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;
 x_l_ini=x_td_ini;
 dy_l_ini=0;
-y_l_ini=12;
+y_l_ini=20;
 
 %En acc_izaje
 dl_h_ini=0;
