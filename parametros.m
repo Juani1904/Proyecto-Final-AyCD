@@ -57,8 +57,8 @@ at_max = 0.8;
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Asignacion aleatoria de la masa del carro (Entorno)
-%Mc_Xvect=
-Mc_X=25000;
+Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
+Mc_Xvect=randi([Mc_min, Mc_max], N, 1); %Generación de masas contenedores aleatoria entre Mc min y Mc max
 %% Perfil de obstaculos (Entorno)
 % N=ceil(80/Wc);
 % dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
@@ -264,18 +264,38 @@ D_tm= 0;
 
 
 %% CN1 - Datos generales
-T_s1=0.02; %Tiempo muestreo control nivel 2
-dt=T_s1;
+%Tiempo muestreo control nivel 1
+T_s1=0.02;
+F02_Ts1=T_s1;
+F03_Ts1=T_s1;
+
+%Fuerza de izaje min
 Fhw_min=1;
+
+%Velocidad angular de izaje minima
 whm_min=10;
+
+%Velocidad angular de carro minima
 wtm_min=10;
-xt_ref=-14; %ya n   o la toma de aca
-dxt_max=4;
-v_t_max=dxt_max;
-v_t_max_2=dxt_max;
+
+%COMPLETAR
+xt_ref=-14; %ya no la toma de aca
+
+%Aceleración máxima carro
 a_t_max=0.8;
+F02_a_t_max=a_t_max;
+F03_a_t_max=a_t_max;
+%Completar
 xx_c0 =-30:0.01:50;
-a_l_max=0.75;
+
+%Velocidad máxima carro
+dxt_max=4;
+F03_dxt_max=dxt_max;
+
+%Aceleración máxima izaje
+a_h_max=0.75;
+F02_a_h_max=a_h_max;
+F03_a_h_max=a_h_max;
 
 %% Condiciones Iniciales
 %En subs_acc_carro
