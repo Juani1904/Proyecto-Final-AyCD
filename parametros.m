@@ -58,7 +58,7 @@ at_max = 0.8;
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Asignacion aleatoria de la masa del carro (Entorno)
 Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
-Mc_Xvect=randi([Mc_min, Mc_max], N, 1); %Generación de masas contenedores aleatoria entre Mc min y Mc max
+Mc_Xvect=randi([Mc_min, Mc_max], 1, N); %Generación de masas contenedores aleatoria entre Mc min y Mc max
 %% Perfil de obstaculos (Entorno)
 % N=ceil(80/Wc);
 % dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
