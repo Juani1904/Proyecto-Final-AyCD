@@ -58,11 +58,11 @@ at_max = 0.8;
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Perfil de obstaculos (Entorno)
 N=ceil(80/Wc);
-dmax=ceil(Yt0/2); %Altura maxima de apilado (Asumida)
+dmax=ceil(Yt0/4); %Altura maxima de apilado (Asumida)
 step = Hc; %Paso de apilado
 valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
 y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
-y0(15)=0; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
+y0(15)=5; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
 
 % Generacion de perfil de obstaculos para apilamiento de containers
 % Muelle a la izquierda (contenores aislados, llegada por camiones)
@@ -263,6 +263,7 @@ D_tm= 0;
 %% CN1 - Datos generales
 %Tiempo muestreo control nivel 1
 T_s1=0.02;
+F01_Ts1=T_s1;
 F02_Ts1=T_s1;
 F03_Ts1=T_s1;
 
@@ -280,7 +281,7 @@ xt_ref=-14; %ya no la toma de aca
 
 %Aceleración máxima carro
 a_t_max=0.8;
-F02_a_t_max=a_t_max;
+F01_a_t_max=a_t_max;
 F03_a_t_max=a_t_max;
 %Completar
 xx_c0 =-30:0.01:50;
