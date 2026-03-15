@@ -3,28 +3,28 @@ function Simulacion(block)
 end
 %% ========================== setup =================================
 function setup(block)
-   block.NumInputPorts  = 5;
+   block.NumInputPorts  = 6;
    block.NumOutputPorts = 0;
    block.SetPreCompInpPortInfoToDynamic;
-   % x_t
+   % Posición x del carro - x_t
    block.InputPort(1).Dimensions        = 1;
    block.InputPort(1).DatatypeID        = 0;
    block.InputPort(1).Complexity        = 'Real';
    block.InputPort(1).SamplingMode      = 'Sample';
    block.InputPort(1).DirectFeedthrough = true;
-   % x_l
+   % Posición x de carga - x_l
    block.InputPort(2).Dimensions        = 1;
    block.InputPort(2).DatatypeID        = 0;
    block.InputPort(2).Complexity        = 'Real';
    block.InputPort(2).SamplingMode      = 'Sample';
    block.InputPort(2).DirectFeedthrough = true;
-   % y_l
+   % Posición y de carga - y_l
    block.InputPort(3).Dimensions        = 1;
    block.InputPort(3).DatatypeID        = 0;
    block.InputPort(3).Complexity        = 'Real';
    block.InputPort(3).SamplingMode      = 'Sample';
    block.InputPort(3).DirectFeedthrough = true;
-   % theta_l
+   % Angulo cable de izaje - theta_l
    block.InputPort(4).Dimensions        = 1;
    block.InputPort(4).DatatypeID        = 0;
    block.InputPort(4).Complexity        = 'Real';
@@ -44,6 +44,12 @@ function setup(block)
    block.RegBlockMethod('Start',                @Start);
    block.RegBlockMethod('Outputs',              @Outputs);
    block.RegBlockMethod('Terminate',            @Terminate);
+   %Señal TLK
+   block.InputPort(6).Dimensions        = 1;
+   block.InputPort(6).DatatypeID        = 0;
+   block.InputPort(6).Complexity        = 'Real';
+   block.InputPort(6).SamplingMode      = 'Sample';
+   block.InputPort(6).DirectFeedthrough = true;
 end
 %% ==================== DoPostPropSetup =============================
 function DoPostPropSetup(block)
@@ -59,9 +65,10 @@ function Start(block)
  close all;
  persistent fig img;
  initialized = false;
- x_t = block.InputPort(1).Data;
- x_l = block.InputPort(2).Data;
- y_l = block.InputPort(3).Data;
+ x_t        = block.InputPort(1).Data;
+ x_l        = block.InputPort(2).Data;
+ y_l        = block.InputPort(3).Data;
+ tlk_act    = block.InputPort(6).Data;
  W_c                 = block.DialogPrm(1).Data;
  H_c                 = block.DialogPrm(2).Data;
  alto_carro          = block.DialogPrm(3).Data;
@@ -107,7 +114,7 @@ function Start(block)
  spreader_handle  = rectangle('Position',[(x_l-ancho_spreader/2),  y_l,                 ancho_spreader, alto_spreader], ...
                               'FaceColor',color_cabezal,'EdgeColor','white','LineWidth',0.01,'Parent',hTransSpreader);
  container_handle = rectangle('Position',[x_l-W_c/2, y_l-H_c, W_c, H_c], ...
-                              'FaceColor',color_containers,'EdgeColor','white','LineWidth',1,'Parent',hTransContainer);
+                              'FaceColor','None','EdgeColor',color_containers','LineWidth',2,'Parent',hTransContainer);
  container_handle.Visible = 'off';
  % Perfil de obstáculos (señal cuadrada con stairs)
  ax = fig.CurrentAxes;
@@ -124,7 +131,7 @@ function Start(block)
  x_centros = -30 + (0:NOBS-1) * 2.44;
  [Xs, Ys]  = stairs(x_centros, y0);
  hold(ax,'on');
- obstacles_handle = plot(ax, Xs, Ys, 'LineWidth',2,'Color','#E99000');
+ obstacles_handle = plot(ax, Xs, Ys, 'LineWidth',2,'Color',color_containers);
  fig.UserData = struct( ...
      'carro_handle',     carro_handle, ...
      'wirerope_handle',  wirerope_handle, ...
@@ -142,11 +149,16 @@ end
 %% =========================== Outputs ===============================
 function Outputs(block)
  persistent fig params
+
+ %Asignamos las variables
  x_t          = block.InputPort(1).Data;
  x_l          = block.InputPort(2).Data;
  y_l          = block.InputPort(3).Data;
  theta_l      = block.InputPort(4).Data;
  alturas_obst = double(block.InputPort(5).Data(:))';   % fila
+ tlk_act      = block.InputPort(6).Data;
+
+ %Inicializamos los parametros colocados en la S-function
  initialized = block.Dwork(1).Data;
  if (initialized == false)
      initialized = true;
@@ -164,24 +176,29 @@ function Outputs(block)
  if isempty(fig) || ~ishandle(fig), return; end
  ud = fig.UserData;
  if ~isstruct(ud), return; end
+
  % Carro
  if isfield(ud,'carro_handle')
      set(ud.carro_handle,'Position',[x_t-(3/4)*params.ancho_carro, 45.000, params.ancho_carro, params.alto_carro]);
  end
+
  % Cabezal (posiciones sin rotación)
  headblock_pos = [(x_l-params.ancho_headblock/2), y_l+params.alto_spreader, params.ancho_headblock, params.alto_headblock];
  spreader_pos  = [(x_l-params.ancho_spreader/2),  y_l,                      params.ancho_spreader, params.alto_spreader];
  if isfield(ud,'headblock_handle'), set(ud.headblock_handle,'Position',headblock_pos); end
  if isfield(ud,'spreader_handle'),  set(ud.spreader_handle, 'Position',spreader_pos);  end
+
  % Rotación
  center = [x_l, spreader_pos(2), 0];
  T = makehgtform('translate',center) * makehgtform('zrotate',theta_l) * makehgtform('translate',-center);
  if isfield(ud,'hTransHeadblock'), set(ud.hTransHeadblock,'Matrix',T); end
  if isfield(ud,'hTransSpreader'),  set(ud.hTransSpreader, 'Matrix',T); end
+
  % Cable
  if isfield(ud,'wirerope_handle')
      set(ud.wirerope_handle,'XData',[x_l x_t],'YData',[y_l 45.000]);
  end
+
  % Perfil de obstáculos (stairs)
  if isfield(ud,'obstacles_handle')
      xc = ud.x_centros;
@@ -196,7 +213,29 @@ function Outputs(block)
      set(ud.obstacles_handle, 'XData', Xs, 'YData', Ys);
  end
  drawnow limitrate;
+
+ %Container debajo de spreader
+if isfield(ud, 'container_handle') && isfield(ud, 'hTransContainer')
+     if tlk_act == 1
+         % Calculamos la posición (esquina inferior izquierda)
+         container_pos = [x_l - params.W_c/2, y_l - params.H_c, params.W_c, params.H_c];
+         
+         % Actualizamos tamaño, posición y rotación
+         set(ud.container_handle, 'Position', container_pos);
+         set(ud.hTransContainer, 'Matrix', T); % T ya se calculó arriba para el spreader
+         
+         % Hacemos visible la caja
+         set(ud.container_handle, 'Visible', 'on');
+     else
+         % Ocultamos la caja si tlk_act no es 1
+         set(ud.container_handle, 'Visible', 'off');
+     end
 end
+
+end
+
+
+
 %% ========================== Terminate =============================
 function Terminate(~)
 end
