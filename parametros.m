@@ -267,8 +267,8 @@ F01_Ts1=T_s1;
 F02_Ts1=T_s1;
 F03_Ts1=T_s1;
 
-%Fuerza de izaje min
-Fhw_min=1;
+%Fuerza de izaje min (Determinacion cable flojo/tenso)
+Fhw_min=10;
 
 %Velocidad angular de izaje minima
 whm_min=10;
