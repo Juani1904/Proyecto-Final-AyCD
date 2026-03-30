@@ -1,4 +1,6 @@
-%SCRIPT de almacenamiento de parametros - Propiedades fisicas del sistema
+%Añado los paths de las funciones
+addpath("Control_Balanceo\")
+%SCRIPT de almacenamiento de parametros -  Propiedades fisicas del sistema
 syms b_ta K_tsa K_tsia b_ha K_hsa K_hsia
 %-----------------------------------------------DATOS CONSIGNA----------------------------------------------------------------------
 %% Datos generales
@@ -259,6 +261,25 @@ B_tm= 1/tautm;
 C_tm= 1;
 D_tm= 0;
 
+%% CN2 - Control balanceo
+xt0  = 0;
+vt0  = 0;
+th0  = 0;
+w0   = 0;
+Ftw0 = 0;
+
+Mt0 = 30000;
+bt0 = 1000;
+g0  = 9.81;
+
+ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
+ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
+l_vec  = linspace(5,30,10);
+
+GS = preparar_gain_scheduling_lookup(xt0,vt0,th0,w0,Ftw0,Mt,ml_vec,l_vec,bt,g,true);
+
+%[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
+
 
 %% CN1 - Datos generales
 %Tiempo muestreo control nivel 1
@@ -314,128 +335,134 @@ y_l_ini=20;
 dl_h_ini=0;
 l_h_ini=Yt0-y_l_ini;
 
-%% Linealizacion Jacobiana 
 
-syms s xt vt th w Ftw real
-syms Mt_sym ml_sym l_sym bt_sym g_sym real
 
-% Estados y entrada
-x = [xt; vt; th; w];
-u = Ftw;
 
-% Definiciones auxiliares
-Dx  = Mt_sym + ml_sym*sin(th)^2;
-Nx = Ftw - bt_sym*vt + ml_sym*l_sym*w^2*sin(th) + ml_sym*g_sym*sin(th)*cos(th);
-Nth = -(Mt_sym+ml_sym*sin(th)^2)*g_sym*sin(th)-cos(th)*(Ftw-bt_sym*vt+ml_sym*l_sym*w^2*sin(th)+ml_sym*g_sym*sin(th)*cos(th));
-Dth = l_sym*(Mt_sym+ml_sym*sin(th)^2);
 
-% Dinámica
-f1 = vt;
-f2 = Nx / Dx;
-f3 = w;
-f4 = Nth / Dth;
 
-f = [f1; f2; f3; f4];
 
-% Jacobianos
-A = jacobian(f, x);
-B = jacobian(f, u);
-
-% (opcional) simplificación
-A = simplify(A);
-B = simplify(B);
-
-% Modelo LPV evaluado en el punto de operacion
-
-xt0 = 0;
-w0 = 0;
-Mt0 = M_x;
-ml0 = Mc_X;
-bt0 = btw;
-g0 = g;
-
-A0 = subs(A, {xt,w,Mt_sym,ml_sym,bt_sym,g_sym}, {xt0,w0,Mt0,ml0,bt0,g0});
-B0 = subs(B, {xt,w}, {xt0,w0});
-
-% Selección de salida y vector que representa la acción de delta-theta
-C = [0 1 0 0];            % salida y = delta v_t
-
-%Para encontrar la funcion de transferencia
-SI_A0 = s*eye(4) - A0;
-Gp = simplify( C * inv(SI_A0)* B(:,1));  % TF de la planta
-
-%% Controlador de carro
-syms Ktp Kti Ktd real
-
-% Obtencion de Funcion de transferencia
-Gct = Ktp+Kti/s+Ktd*s;
-
-%% Controlador de balanceo
-
-% Obtencion de Funcion de transferencia
-syms Kp Kd real
-
-Gc = Kp+Kd*s;
-
-Gcb = (Gc+Gct)*Gp/(1+(Gc+Gct)*Gp);
-Gcb = simplify(Gcb);
-[~, denGcb] = numden(Gcb);
-denGcb = simplify(denGcb);
-
-%% Diseño por amortiguamiento crítico
-% % Usamos una wn mayor a la de lazo abierto
-wn = 1.5*8;
-w_pos_cb = 10*wn;
-
-% Polinomio dominante de segundo orden crítico
-P_dom = s^2 + 2*wn*s + wn^2;
-
-% Polos no dominantes (rápidos)
-alpha = 5*wn;
-beta = 6*wn;
-P_des = expand(P_dom * (s + alpha) * (s + beta));
-
-% Coeficientes del polinomio del lazo cerrado
-coeffs_gcb=coeffs(denGcb, s, 'All');
-
-% Coeficientes del polinomio del lazo cerrado
-coeffs_des=coeffs(P_dom, s, 'All');
-
-% % Igualación de coeficientes
-% Pdiff = (expand(D_lc - D_des));
-% coeffs_vec = coeffs(Pdiff, s);
-% eqs = coeffs_vec == 0;
-
-% % % Forma robusta: extraer polinomio en vector
-% % [~,P_des_d] = numden(P_des);
-% % poly_des = expand(P_des_d);
-
-% % Igualación por coeficientes (grado 4 -> 5 ecuaciones)
-% coeffs_lc = coeffs(P_lc,s,'All');
-% coeffs_des = coeffs(P_des, s, 'All');
-
-% alinear longitudes rellenando con ceros si es necesario
-nL = length(coeffs_gcb); nD = length(coeffs_des);
-n = max(nL, nD);
-coeffs_gcb = [zeros(1,n-nL), coeffs_gcb];
-coeffs_des = [zeros(1,n-nD), coeffs_des];
+% %% Linealizacion Jacobiana 
 % 
-% % formar sistema de ecuaciones (vectorial)
-% eqs = coeffs_gcb - coeffs_des;
-% eqs = simplify(eqs);           % ecuaciones simbólicas
-
-Gcb_tranf = coeffs_gcb;
-
-polin_sint_serie_cb = coeffs_des;
-
-soluch = solve([Gcb_tranf==polin_sint_serie_cb], [Kp, Kd]);
-
-Kp = double(soluch.Kp)
-Kd = double(soluch.Kd)
-
-% % Resolver simbólicamente Kp, Kd
-% sol = solve(eqs==0, [Kp Kd]);
+% syms s xt vt th w Ftw real
+% syms Mt_sym ml_sym l_sym bt_sym g_sym real
 % 
-% % recoger soluciones posibles
-% Kp_sol = sol.Kp;
-% Kd_sol = sol.Kd;
+% % Estados y entrada
+% x = [xt; vt; th; w];
+% u = Ftw;
+% 
+% % Definiciones auxiliares
+% Dx  = Mt_sym + ml_sym*sin(th)^2;
+% Nx = Ftw - bt_sym*vt + ml_sym*l_sym*w^2*sin(th) + ml_sym*g_sym*sin(th)*cos(th);
+% Nth = -(Mt_sym+ml_sym*sin(th)^2)*g_sym*sin(th)-cos(th)*(Ftw-bt_sym*vt+ml_sym*l_sym*w^2*sin(th)+ml_sym*g_sym*sin(th)*cos(th));
+% Dth = l_sym*(Mt_sym+ml_sym*sin(th)^2);
+% 
+% % Dinámica
+% f1 = vt;
+% f2 = Nx / Dx;
+% f3 = w;
+% f4 = Nth / Dth;
+% 
+% f = [f1; f2; f3; f4];
+% 
+% % Jacobianos
+% A = jacobian(f, x);
+% B = jacobian(f, u);
+% 
+% % (opcional) simplificación
+% A = simplify(A);
+% B = simplify(B);
+% 
+% % Modelo LPV evaluado en el punto de operacion
+% 
+% xt0 = 0;
+% w0 = 0;
+% Mt0 = M_x;
+% ml0 = Mc_X;
+% bt0 = btw;
+% g0 = g;
+% 
+% A0 = subs(A, {xt,w,Mt_sym,ml_sym,bt_sym,g_sym}, {xt0,w0,Mt0,ml0,bt0,g0});
+% B0 = subs(B, {xt,w}, {xt0,w0});
+% 
+% % Selección de salida y vector que representa la acción de delta-theta
+% C = [0 1 0 0];            % salida y = delta v_t
+% 
+% %Para encontrar la funcion de transferencia
+% SI_A0 = s*eye(4) - A0;
+% Gp = simplify( C * inv(SI_A0)* B(:,1));  % TF de la planta
+% 
+% %% Controlador de carro
+% syms Ktp Kti Ktd real
+% 
+% % Obtencion de Funcion de transferencia
+% Gct = Ktp+Kti/s+Ktd*s;
+% 
+% %% Controlador de balanceo
+% 
+% % Obtencion de Funcion de transferencia
+% syms Kp Kd real
+% 
+% Gc = Kp+Kd*s;
+% 
+% Gcb = (Gc+Gct)*Gp/(1+(Gc+Gct)*Gp);
+% Gcb = simplify(Gcb);
+% [~, denGcb] = numden(Gcb);
+% denGcb = simplify(denGcb);
+% 
+% %% Diseño por amortiguamiento crítico
+% % % Usamos una wn mayor a la de lazo abierto
+% wn = 1.5*8;
+% w_pos_cb = 10*wn;
+% 
+% % Polinomio dominante de segundo orden crítico
+% P_dom = s^2 + 2*wn*s + wn^2;
+% 
+% % Polos no dominantes (rápidos)
+% alpha = 5*wn;
+% beta = 6*wn;
+% P_des = expand(P_dom * (s + alpha) * (s + beta));
+% 
+% % Coeficientes del polinomio del lazo cerrado
+% coeffs_gcb=coeffs(denGcb, s, 'All');
+% 
+% % Coeficientes del polinomio del lazo cerrado
+% coeffs_des=coeffs(P_dom, s, 'All');
+% 
+% % % Igualación de coeficientes
+% % Pdiff = (expand(D_lc - D_des));
+% % coeffs_vec = coeffs(Pdiff, s);
+% % eqs = coeffs_vec == 0;
+% 
+% % % % Forma robusta: extraer polinomio en vector
+% % % [~,P_des_d] = numden(P_des);
+% % % poly_des = expand(P_des_d);
+% 
+% % % Igualación por coeficientes (grado 4 -> 5 ecuaciones)
+% % coeffs_lc = coeffs(P_lc,s,'All');
+% % coeffs_des = coeffs(P_des, s, 'All');
+% 
+% % alinear longitudes rellenando con ceros si es necesario
+% nL = length(coeffs_gcb); nD = length(coeffs_des);
+% n = max(nL, nD);
+% coeffs_gcb = [zeros(1,n-nL), coeffs_gcb];
+% coeffs_des = [zeros(1,n-nD), coeffs_des];
+% % 
+% % % formar sistema de ecuaciones (vectorial)
+% % eqs = coeffs_gcb - coeffs_des;
+% % eqs = simplify(eqs);           % ecuaciones simbólicas
+% 
+% Gcb_tranf = coeffs_gcb;
+% 
+% polin_sint_serie_cb = coeffs_des;
+% 
+% soluch = solve([Gcb_tranf==polin_sint_serie_cb], [Kp, Kd]);
+% 
+% Kp = double(soluch.Kp);
+% Kd = double(soluch.Kd);
+% 
+% % % Resolver simbólicamente Kp, Kd
+% % sol = solve(eqs==0, [Kp Kd]);
+% % 
+% % % recoger soluciones posibles
+% % Kp_sol = sol.Kp;
+% % Kd_sol = sol.Kd;
