@@ -274,9 +274,10 @@ g0  = 9.81;
 
 ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
-l_vec  = linspace(5,30,10);
+l_vec  = linspace(5,45,10);
 
 GS = preparar_gain_scheduling_lookup(xt0,vt0,th0,w0,Ftw0,Mt,ml_vec,l_vec,bt,g,true);
+
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
 
