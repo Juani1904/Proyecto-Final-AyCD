@@ -48,7 +48,7 @@ rtd = 0.50;                  % Radio primitivo del tambor (1 sola corrida de cab
 Jtd = 1200;                  % Momento de inercia del eje lento (tambor y salida de reductora) [kg*m^2]
 btd = 1.8;                   % Fricción mecánica viscosa del eje lento [N*m/(rad/s)]
 it = 30.0;                   % Relación de transmisión total de la caja reductora (i:t = 30:1)
-Jtm_ttb = 7.0;               % Momento de inercia del eje rápido (motor y entrada de reductora) [kg*m^2]
+Jtm_tb = 7.0;               % Momento de inercia del eje rápido (motor y entrada de reductora) [kg*m^2]
 btm = 6.0;                   % Fricción mecánica viscosa del eje rápido [N*m/(rad/s)]
 btb = 5.0e6;                 % Fricción viscosa del freno de operación cerrado [N*m/(rad/s)]
 Ttb_Max = 5.0e3;             % Torque máximo del freno de operación cerrado [N*m]
@@ -193,7 +193,7 @@ T_s2=0.001; %Tiempo muestreo control nivel 2
 % %K_tsia = (w_pos_t^3 * J_eqt * rtd) / it;
 % K_tsia = w_pos_t * K_tsa;
 
-J_eqt = Jtm_ttb*it^2/rtd^2 + Jtd/rtd^2 + Ms + M_x;   
+J_eqt = Jtm_tb*it^2/rtd^2 + Jtd/rtd^2 + Ms + M_x;   
 b_eqt = btm*it^2/rtd^2 + btd/rtd^2;
 
 coef_t = [rtd*(J_eqt+Mt)/it; rtd*(b_eqt+bt)/it; 0];
