@@ -262,15 +262,14 @@ C_tm= 1;
 D_tm= 0;
 
 %% CN2 - Control balanceo
+
+%Condiciones iniciales
 xt0  = 0;
 vt0  = 0;
 th0  = 0;
 w0   = 0;
 Ftw0 = 0;
 
-Mt0 = 30000;
-bt0 = 1000;
-g0  = 9.81;
 
 ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
