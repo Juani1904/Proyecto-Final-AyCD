@@ -6,20 +6,23 @@ if nargin < 11
 end
 
 %% 1) Generar matrices crudas
-[Kp_raw, Kd_raw] = generar_matrices_jacob( ...
+[Kp_raw, Kd_raw, Ki_raw] = generar_matrices_jacob( ...
     xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0);
 
 %% 2) Rellenar NaN
 Kp_fill = rellenar_nan_matriz(Kp_raw);
 Kd_fill = rellenar_nan_matriz(Kd_raw);
+Ki_fill = rellenar_nan_matriz(Ki_raw);
 
 %% 3) Suavizado opcional
 if aplicar_suavizado
     Kp_use = suavizar_matriz(Kp_fill);
     Kd_use = suavizar_matriz(Kd_fill);
+    Ki_use = suavizar_matriz(Ki_fill);
 else
     Kp_use = Kp_fill;
     Kd_use = Kd_fill;
+    Ki_use = Ki_fill;
 end
 
 %% 4) Guardar en estructura
@@ -31,14 +34,19 @@ GS.at_vec   = at_vec(:);
 
 GS.Kp_raw  = Kp_raw;
 GS.Kd_raw  = Kd_raw;
+GS.Ki_raw  = Ki_raw;
 GS.Kp_fill = Kp_fill;
 GS.Kd_fill = Kd_fill;
+GS.Ki_fill = Ki_fill;
 GS.Kp      = Kp_use;
 GS.Kd      = Kd_use;
+GS.Ki      = Ki_use;
 
 %% 5) Variables listas para Simulink
 Kp_table = GS.Kp;
 Kd_table = GS.Kd;
+Ki_table = GS.Ki;
+
 ml_breakpoints = GS.ml_vec;
 l_breakpoints  = GS.l_vec;
 vt_breakpoints = GS.vt_vec;
@@ -47,6 +55,7 @@ at_breakpoints = GS.at_vec;
 assignin('base','GS',GS);
 assignin('base','Kp_table',Kp_table);
 assignin('base','Kd_table',Kd_table);
+assignin('base','Ki_table',Ki_table);
 assignin('base','ml_breakpoints',ml_breakpoints);
 assignin('base','l_breakpoints',l_breakpoints);
 assignin('base','vt_breakpoints',vt_breakpoints);

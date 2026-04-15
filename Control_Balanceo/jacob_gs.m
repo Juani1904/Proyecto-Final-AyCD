@@ -89,9 +89,9 @@ else
     w_nat_gp = max(abs(polos_gp));
 end
 
-lambda_ss = 1.5;
+lambda_ss = 2.5;
 w_pos_p   = lambda_ss * w_nat_gp;
-n_p       = 2.0;
+n_p       = 2;
 
 alpha = n_p * w_pos_p;
 beta  = w_pos_p^2;
