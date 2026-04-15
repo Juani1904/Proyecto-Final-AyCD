@@ -9,8 +9,10 @@ Hc = 2.59;              % Altura del container estándar [m]
 Wc = 2.44;              % Ancho del container estándar [m]
 Ms = 15000;             % Masa del spreader + headblock (sin container) [kg]
 Mc_max = 50000;         % Masa máxima del container totalmente cargado [kg]
-Mc_min = 2000;          % Masa mínima del container vacío [kg]
+Mc_min = 2000;          % -----Masa mínima del container vacío [kg]
 g = 9.80665;            % Aceleración gravitatoria [m/s^2]
+a_t_max=0.8;            % Aceleración máxima del carro
+a_h_max=0.75;           % Aceleración maxima de izaje
 %% Carga apoyada - Parametros de contacto
 Kcy = 1.8e9;            % Rigidez de compresión por contacto vertical [N/m]
 bcy = 10.0e6;           % Fricción interna (amortiguamiento vertical) [N/(m/s)]
@@ -265,17 +267,19 @@ D_tm= 0;
 
 %Condiciones iniciales
 xt0  = 0;
-vt0  = 0;
-th0  = 0;
+%vt0  = 0;
+%th0  = 0;
 w0   = 0;
-Ftw0 = 0;
+%Ftw0 = 0;
 
 
 ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
 l_vec  = linspace(5,45,10);
+vt_vec = linspace(0,vt_max,10);
+at_vec = linspace(0,at_max,10);
 
-GS = preparar_gain_scheduling_lookup(xt0,vt0,th0,w0,Ftw0,Mt,ml_vec,l_vec,bt,g,true);
+GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
@@ -301,7 +305,6 @@ wtm_min=10;
 xt_ref=-14; %ya no la toma de aca
 
 %Aceleración máxima carro
-a_t_max=0.8;
 F01_a_t_max=a_t_max;
 F03_a_t_max=a_t_max;
 %Completar
@@ -312,27 +315,27 @@ dxt_max=4;
 F03_dxt_max=dxt_max;
 
 %Aceleración máxima izaje
-a_h_max=0.75;
+
 F02_a_h_max=a_h_max;
 F03_a_h_max=a_h_max;
 
 %% Condiciones Iniciales
 %En subs_acc_carro
-dx_td_ini = 0; 
-x_td_ini = 25;
+dx_td_ini = 0;      %MODIFICABLE
+x_td_ini = -20;     %MODIFICABLE
 
 %En subs_tras_carro
-dx_t_ini=0;
+dx_t_ini=dx_td_ini;
 x_t_ini=x_td_ini;
 
 %En subs_carga
-dx_l_ini=0;
-x_l_ini=x_td_ini;
-dy_l_ini=0;
-y_l_ini=20;
+dx_l_ini=0;         %MODIFICABLE
+x_l_ini=x_td_ini;   
+dy_l_ini=0;         %MODIFICABLE
+y_l_ini=20;         %MODIFICABLE
 
 %En acc_izaje
-dl_h_ini=0;
+dl_h_ini=dy_l_ini;
 l_h_ini=Yt0-y_l_ini;
 
 

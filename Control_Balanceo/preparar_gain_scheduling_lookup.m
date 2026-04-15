@@ -1,5 +1,5 @@
 function GS = preparar_gain_scheduling_lookup( ...
-    xt0,vt0,th0,w0,Ftw0,Mt0,ml_vec,l_vec,bt0,g0,aplicar_suavizado)
+    xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0,aplicar_suavizado)
 
 if nargin < 11
     aplicar_suavizado = false;
@@ -7,7 +7,7 @@ end
 
 %% 1) Generar matrices crudas
 [Kp_raw, Kd_raw] = generar_matrices_jacob( ...
-    xt0,vt0,th0,w0,Ftw0,Mt0,ml_vec,l_vec,bt0,g0);
+    xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0);
 
 %% 2) Rellenar NaN
 Kp_fill = rellenar_nan_matriz(Kp_raw);
@@ -26,6 +26,9 @@ end
 GS = struct();
 GS.ml_vec  = ml_vec(:);
 GS.l_vec   = l_vec(:);
+GS.vt_vec   = vt_vec(:);
+GS.at_vec   = at_vec(:);
+
 GS.Kp_raw  = Kp_raw;
 GS.Kd_raw  = Kd_raw;
 GS.Kp_fill = Kp_fill;
@@ -38,12 +41,16 @@ Kp_table = GS.Kp;
 Kd_table = GS.Kd;
 ml_breakpoints = GS.ml_vec;
 l_breakpoints  = GS.l_vec;
+vt_breakpoints = GS.vt_vec;
+at_breakpoints = GS.at_vec;
 
 assignin('base','GS',GS);
 assignin('base','Kp_table',Kp_table);
 assignin('base','Kd_table',Kd_table);
 assignin('base','ml_breakpoints',ml_breakpoints);
 assignin('base','l_breakpoints',l_breakpoints);
+assignin('base','vt_breakpoints',vt_breakpoints);
+assignin('base','at_breakpoints',at_breakpoints);
 
 end
 

@@ -1,5 +1,9 @@
 function [Kp_num, Kd_num, A0_num, B0_num, Gp_sym, Pdes_sym, Plc_sym, Gcb_sym] = ...
-    jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,ml0,l0,bt0,g0)
+    jacob_gs(xt0,vt0,at0,w0,Mt0,ml0,l0,bt0,g0)
+
+th0 = atan2(-at0,g0);
+
+Ftw0 = (Mt0 + ml0)*at0 + bt0*vt0;
 
 syms xt vt th w Ftw Mt ml l bt g dd_xt dd_th s real
 
@@ -24,6 +28,10 @@ A = simplify(jacobian(f, x));
 B = simplify(jacobian(f, u));
 
 %% Punto de operacion
+%solF = solve(eq2,Ftw);
+%Ftw_expr = simplify(solF.Ftw);
+%Ftw0= subs(Ftw_expr,[])
+
 vars_sym = [xt; vt; th; w; Ftw; Mt; ml; l; bt; g];
 vals_num = [xt0; vt0; th0; w0; Ftw0; Mt0; ml0; l0; bt0; g0];
 
