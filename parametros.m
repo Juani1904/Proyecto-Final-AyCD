@@ -277,7 +277,7 @@ ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
 l_vec  = linspace(5,45,10);
 vt_vec = linspace(0,vt_max,10);
-at_vec = linspace(0,at_max,10);
+at_vec = linspace(-at_max,at_max,10);
 
 GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 

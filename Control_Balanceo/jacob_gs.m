@@ -1,9 +1,9 @@
 function [Kp_num, Kd_num, A0_num, B0_num, Gp_sym, Pdes_sym, Plc_sym, Gcb_sym] = ...
     jacob_gs(xt0,vt0,at0,w0,Mt0,ml0,l0,bt0,g0)
+warning('off', 'symbolic:solve:SolutionsDependOnConditions');
 
 th0 = atan2(-at0,g0);
-
-Ftw0 = (Mt0 + ml0)*at0 + bt0*vt0;
+%Ftw0 = (Mt0 + ml0)*at0 + bt0*vt0;
 
 syms xt vt th w Ftw Mt ml l bt g dd_xt dd_th s real
 
@@ -28,9 +28,8 @@ A = simplify(jacobian(f, x));
 B = simplify(jacobian(f, u));
 
 %% Punto de operacion
-%solF = solve(eq2,Ftw);
-%Ftw_expr = simplify(solF.Ftw);
-%Ftw0= subs(Ftw_expr,[])
+solF = solve(dd_xt_expr,Ftw);
+Ftw0= subs(solF,[vt; th; w ; Mt; ml; l; bt; g],[vt0; th0; w0; Mt0; ml0; l0; bt0; g0]);
 
 vars_sym = [xt; vt; th; w; Ftw; Mt; ml; l; bt; g];
 vals_num = [xt0; vt0; th0; w0; Ftw0; Mt0; ml0; l0; bt0; g0];
@@ -91,7 +90,7 @@ end
 
 lambda_ss = 1.5;
 w_pos_p   = lambda_ss * w_nat_gp;
-n_p       = 2.0;
+n_p       = 2;
 
 alpha = n_p * w_pos_p;
 beta  = w_pos_p^2;
