@@ -13,6 +13,7 @@ Mc_min = 2000;          % -----Masa mínima del container vacío [kg]
 g = 9.80665;            % Aceleración gravitatoria [m/s^2]
 a_t_max=0.8;            % Aceleración máxima del carro
 a_h_max=0.75;           % Aceleración maxima de izaje
+
 %% Carga apoyada - Parametros de contacto
 Kcy = 1.8e9;            % Rigidez de compresión por contacto vertical [N/m]
 bcy = 10.0e6;           % Fricción interna (amortiguamiento vertical) [N/(m/s)]
