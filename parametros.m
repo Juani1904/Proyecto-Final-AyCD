@@ -288,7 +288,7 @@ GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,t
 
 %% CN1 - Datos generales
 %Tiempo muestreo control nivel 1
-T_s1=0.001;
+T_s1=0.02;
 F01_Ts1=T_s1;
 F02_Ts1=T_s1;
 F03_Ts1=T_s1;
