@@ -320,6 +320,10 @@ F03_dxt_max=dxt_max;
 F02_a_h_max=a_h_max;
 F03_a_h_max=a_h_max;
 
+%
+tita_l_max_estable=1*(pi/180); %1 grado (En radianes)
+
+
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0;      %MODIFICABLE
