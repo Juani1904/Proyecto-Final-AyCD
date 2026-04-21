@@ -267,7 +267,7 @@ D_tm= 0;
 %% CN2 - Control balanceo
 
 %Condiciones iniciales
-xt0  = 0;
+xt0  = -20;
 %vt0  = 0;
 %th0  = 0;
 w0   = 0;
@@ -303,7 +303,7 @@ whm_min=10;
 wtm_min=10;
 
 %COMPLETAR
-xt_ref=-14; %ya no la toma de aca
+xt_ref=-20; %ya no la toma de aca
 
 %Aceleración máxima carro
 F01_a_t_max=a_t_max;
