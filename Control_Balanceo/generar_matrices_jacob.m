@@ -10,9 +10,9 @@ Kp_mat = NaN(nml,nl);
 Kd_mat = NaN(nml,nl);
 % Ki_mat = NaN(nml,nl);
 
-%for i = 1:nml
-    %ml0 = ml_vec(i);
-    ml0=15000;
+for i = 1:nml
+    ml0 = ml_vec(i);
+    %ml0=15000;
     for j = 1:nl
         l0  = l_vec(j);
         %for k = 1:nvt
@@ -25,8 +25,8 @@ Kd_mat = NaN(nml,nl);
         
                     % Kp_mat(i,j,k,l) = Kp;
                     % Kd_mat(i,j,k,l) = Kd;
-                     Kp_mat(j,l) = Kp;
-                     Kd_mat(j,l) = Kd;
+                     Kp_mat(i,j,l) = Kp;
+                     Kd_mat(i,j,l) = Kd;
                      % Ki_mat(j,l) = Ki;
 
                     fprintf('ml=%.3f, l=%.3f, vt=%.3f, at=%.3f -> Kp=%.6f, Kd=%.6f\n', ...
@@ -42,6 +42,6 @@ Kd_mat = NaN(nml,nl);
         
         
     end
-%end
+end
 
 end
