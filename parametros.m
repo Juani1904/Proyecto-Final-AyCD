@@ -177,6 +177,7 @@ y0(15)=5; %Setea en cero la altura correspondiente al borde entre el agua y el m
 %% Asignacion aleatoria de la masa del carro (Entorno)
 Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
 Mc_Xvect=randi([Mc_min, Mc_max], 1, N); %Generación de masas contenedores aleatoria entre Mc min y Mc max
+Mc_Xvect_sobrecarga=ones(1,N)*(Mc_max+1000);
 
 %% CN2 - Datos generales
 T_s2=0.001; %Tiempo muestreo control nivel 2
