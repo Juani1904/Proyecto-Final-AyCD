@@ -179,10 +179,13 @@ Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
 Mc_Xvect=randi([Mc_min, Mc_max], 1, N); %Generación de masas contenedores aleatoria entre Mc min y Mc max
 Mc_Xvect_sobrecarga=ones(1,N)*(Mc_max+1000);
 
-%% CN2 - Datos generales
+%% CN2 - CONTROL REGULATORIO
+
+% ------------------------------------------------CN2 - DATOS GENERALES---------------------------------------------------
+
 T_s2=0.001; %Tiempo muestreo control nivel 2
 
-%% CN2 - Controlador de movimiento - Carro
+% ---------------------------------------CN2 - CONTROLADOR DE MOVIMIENTO CARRO -----------------------------------------
 % p1_t=0;
 % p2_t=bt/Mt;
 % w_pos_t=500*p2_t;
@@ -220,7 +223,7 @@ K_tsia = -double(soluct.K_tsia)
 roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+J_eqt)/it); K_tsia/(rtd*(Mt+J_eqt)/it)])
 
 
-%% CN2 - Controlador de movimiento - Izaje
+% ------------------------------------------------CN2 - CONTROLADOR DE MOVIMIENTO IZAJE -------------------------------
 % J_eqh=(1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);
 % b_eqh=(1/rhd)*(2*bhd+2*bhm*(ih)^2);
 % p1_h=0;
@@ -250,22 +253,20 @@ K_hsia = -double(soluch.K_hsia)
 
 roots([1; ih*((b_eqh/ih) - b_ha)/((rhd*M_x/2)+J_eqh); -K_hsa*ih/((rhd*M_x/2)+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)])
 
-%% CN2 - Controlador de movimiento - Oscilacion Carga
 
-
-%% CN2 -Modulador de Torque equivalente - Motor-Drive Izaje
+% --------------------------------CN2 - MODULADOR DE TORQUE EQUIVALENTE - MOTOR DRIVE IZAJE -------------------------
 A_hm=-1/tauhm;
 B_hm= 1/tauhm;
 C_hm= 1;
 D_hm= 0;
 
-%% CN2 -Modulador de Torque equivalente - Motor-Drive Carro
+% --------------------------------CN2 - MODULADOR DE TORQUE EQUIVALENTE - MOTOR DRIVE IZAJE -----------------------
 A_tm=-1/tautm;
 B_tm= 1/tautm;
 C_tm= 1;
 D_tm= 0;
 
-%% CN2 - Control balanceo
+% --------------------------------------------CN2 - CONTROL BALANCEO -----------------------------------------------
 
 %Condiciones iniciales
 xt0  = -20;
@@ -287,7 +288,10 @@ GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,t
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
 
 
-%% CN1 - Datos generales
+%% CN1 - CONTROL SUPERVISOR
+
+%--------------------------------------------------CN1 - DATOS GENERALES---------------------------------------------
+
 %Tiempo muestreo control nivel 1
 T_s1=0.02;
 F01_Ts1=T_s1;
@@ -317,13 +321,17 @@ dxt_max=4;
 F03_dxt_max=dxt_max;
 
 %Aceleración máxima izaje
-
 F02_a_h_max=a_h_max;
 F03_a_h_max=a_h_max;
 
-%
+%Angulo de izaje max tolerable, carro detenido
 tita_l_max_estable=1*(pi/180); %1 grado (En radianes)
 
+%% CN0 - CONTROL SEGURIDAD
+
+%--------------------------------------------------CN0 - DATOS GENERALES---------------------------------------------
+
+T_s0=0.02;
 
 %% Condiciones Iniciales
 %En subs_acc_carro
