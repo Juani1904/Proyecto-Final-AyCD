@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="4.5.1.0" runtimeid="3.5.20.20" libversion="4.5.0.0" compiler="3.5.20.20" lmm="3.5.20.20" profile="CODESYS V3.5 SP20 Patch 2+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="Prueba_1" devicename="Device" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
+    <TypeSimple name="T_DINT" size="4" swapsize="4" typeclass="DInt" iecname="DINT" />
+    <TypeSimple name="T_LREAL" size="8" swapsize="8" typeclass="LReal" iecname="LREAL" />
+    <TypeArray name="T_ARRAY__0__32__OF_LREAL" size="264" nativesize="264" typeclass="Array" iecname="ARRAY [0..32] OF LREAL" basetype="T_LREAL">
+      <ArrayDim minrange="0" maxrange="32" />
+    </TypeArray>
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="Nivel_1">
+        <Node name="bal_control" type="T_BOOL" access="Read" />
+        <Node name="BRK_h" type="T_BOOL" access="Read" />
+        <Node name="BRK_hE" type="T_BOOL" access="Read" />
+        <Node name="BRK_t" type="T_BOOL" access="Read" />
+        <Node name="c" type="T_DINT" access="Read" />
+        <Node name="control_bal_on" type="T_BOOL" access="Write" />
+        <Node name="ddxt_ref" type="T_LREAL" access="Read" />
+        <Node name="dlh_max" type="T_LREAL" access="Write" />
+        <Node name="dlh_ref" type="T_LREAL" access="Read" />
+        <Node name="dlh_ref_man" type="T_LREAL" access="Write" />
+        <Node name="dxt_ref" type="T_LREAL" access="Read" />
+        <Node name="dxt_ref_man" type="T_LREAL" access="Write" />
+        <Node name="FC_DER" type="T_BOOL" access="Write" />
+        <Node name="FC_INF" type="T_BOOL" access="Write" />
+        <Node name="FC_IZQ" type="T_BOOL" access="Write" />
+        <Node name="FC_SUP" type="T_BOOL" access="Write" />
+        <Node name="Fhw" type="T_LREAL" access="Write" />
+        <Node name="lh" type="T_LREAL" access="Write" />
+        <Node name="Ml" type="T_LREAL" access="Write" />
+        <Node name="Ml_estimada" type="T_LREAL" access="Read" />
+        <Node name="Thm_disp" type="T_LREAL" access="Write" />
+        <Node name="tita_l" type="T_LREAL" access="Write" />
+        <Node name="TLK" type="T_BOOL" access="Read" />
+        <Node name="TLK_act" type="T_BOOL" access="Write" />
+        <Node name="Ttm_disp" type="T_LREAL" access="Write" />
+        <Node name="whm" type="T_LREAL" access="Write" />
+        <Node name="whm_ant" type="T_LREAL" access="Write" />
+        <Node name="wtm" type="T_LREAL" access="Write" />
+        <Node name="wtm_ant" type="T_LREAL" access="Write" />
+        <Node name="xtd" type="T_LREAL" access="Write" />
+        <Node name="Y_c0" type="T_ARRAY__0__32__OF_LREAL" access="ReadWrite" />
+        <Node name="yc0_xt" type="T_LREAL" access="Write" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>

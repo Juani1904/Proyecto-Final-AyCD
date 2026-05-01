@@ -46,7 +46,7 @@ function setup(block)
    block.RegBlockMethod('Terminate',            @Terminate);
    %Señal TLK
    block.InputPort(6).Dimensions        = 1;
-   block.InputPort(6).DatatypeID        = 0;
+   block.InputPort(6).DatatypeID        = 8;
    block.InputPort(6).Complexity        = 'Real';
    block.InputPort(6).SamplingMode      = 'Sample';
    block.InputPort(6).DirectFeedthrough = true;
