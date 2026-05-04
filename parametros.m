@@ -346,18 +346,24 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=20;         %MODIFICABLE
+y_l_ini=40;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
 l_h_ini=Yt0-y_l_ini;
 
 
+%% Observador
+w_obs = 1000;
+ke_tita = w_obs*3;
+ke_w = 3*w_obs^2;
+ke_int = w_obs^3;
 
 
+%%
 
-
-
+Kp_table = Kp_table.*0.5;
+Kd_table = Kd_table.*1.1;
 % %% Linealizacion Jacobiana 
 % 
 % syms s xt vt th w Ftw real
