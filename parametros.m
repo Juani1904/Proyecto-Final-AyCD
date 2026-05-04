@@ -1,4 +1,4 @@
-%Añado los paths de las funciones
+5%Añado los paths de las funciones
 addpath("Control_Balanceo\")
 %SCRIPT de almacenamiento de parametros -  Propiedades fisicas del sistema
 syms b_ta K_tsa K_tsia b_ha K_hsa K_hsia
@@ -266,7 +266,7 @@ B_tm= 1/tautm;
 C_tm= 1;
 D_tm= 0;
 
-%% --------------------------------------------CN2 - CONTROL BALANCEO -----------------------------------------------
+%-------------------------------------------------CN2 - CONTROL BALANCEO -----------------------------------------------
 
 %Condiciones iniciales
 xt0  = -20;
