@@ -69,111 +69,6 @@ valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
 y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
 y0(15)=5; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
 
-% Generacion de perfil de obstaculos para apilamiento de containers
-% Muelle a la izquierda (contenores aislados, llegada por camiones)
-% Barco a la derecha (apilamiento por bloques / mesetas)
-
-% N = ceil(80/Wc);
-% dmax = ceil(Yt0/2);
-% step = Hc;
-% 
-% % Indice del borde agua–muelle
-% idx_borde = ceil(30/Wc);
-% 
-% % Definicion de zonas
-% quay_idx = 1:(idx_borde-1);      % muelle (izquierda)
-% ship_idx = (idx_borde+1):N;      % barco (derecha)
-% 
-% % Alturas maximas por zona (en niveles discretos)
-% maxShip = max(2, floor(0.90*dmax/step));
-% maxQuay = max(1, floor(0.60*dmax/step));
-% 
-% % Parametros de correlacion espacial
-% Lship = 4;   % bloques mas largos en barco
-% Lquay = 2;   % menor correlacion en muelle
-% 
-% % Señal correlacionada simple
-% corrSignal = @(n,L) filter(ones(1,max(1,L))/max(1,L), 1, randn(1,n));
-% 
-% % Normalizacion suave a [0,1] para evitar extremos
-% to01 = @(z) max(0, min(1, 0.5 + 0.20*z));
-% 
-% % ----- BARCO: apilamiento por bloques -----
-% zShip = corrSignal(numel(ship_idx), Lship);
-% uShip = to01(zShip);
-% 
-% gammaShip = 1.6;    % controla sesgo hacia alturas medias
-% lvlShip = round((uShip.^(1/gammaShip)) * maxShip);
-% 
-% % Suavizado adicional para generar mesetas
-% lvlShip = round(filter([1 2 3 2 1]/9, 1, lvlShip));
-% lvlShip = max(0, min(maxShip, lvlShip));
-% 
-% % ----- MUELLE: contenedores aislados -----
-% zQuay = corrSignal(numel(quay_idx), Lquay);
-% uQuay = to01(zQuay);
-% 
-% gammaQuay = 2.4;    % mayor sesgo a alturas bajas
-% lvlQuay = round((uQuay.^(1/gammaQuay)) * maxQuay);
-% lvlQuay = max(0, min(maxQuay, lvlQuay));
-% 
-% % Pequeña irregularidad vertical
-% jitterProb = 0.10;
-% jitter = (rand(size(lvlQuay)) < jitterProb) .* (randi(3, size(lvlQuay)) - 2);
-% lvlQuay = max(0, min(maxQuay, lvlQuay + jitter));
-% 
-% % Mascara de ocupacion para generar stacks aislados
-% p_single = 0.12;    % stacks individuales
-% p_pair   = 0.03;    % pares ocasionales
-% 
-% nq = numel(lvlQuay);
-% mask = false(1, nq);
-% 
-% i = 1;
-% while i <= nq
-%     r = rand;
-%     if r < p_pair && i < nq
-%         mask(i) = true;
-%         mask(i+1) = true;
-%         i = i + 3;      % dejo un hueco para evitar bloques largos
-%     elseif r < (p_pair + p_single)
-%         mask(i) = true;
-%         i = i + 2;      % dejo un hueco
-%     else
-%         i = i + 1;
-%     end
-% end
-% 
-% lvlQuay(~mask) = 0;
-% 
-% % Evito triples consecutivos dejando solo el central
-% for k = 2:(nq-1)
-%     if lvlQuay(k)>0 && lvlQuay(k-1)>0 && lvlQuay(k+1)>0
-%         lvlQuay(k-1) = 0;
-%         lvlQuay(k+1) = 0;
-%     end
-% end
-% 
-% % ----- Construccion del perfil final -----
-% y0 = zeros(1, N);
-% y0(quay_idx) = lvlQuay * step;
-% y0(ship_idx) = lvlShip * step;
-% 
-% % Altura cero en el borde agua–muelle
-% y0(idx_borde) = 0;
-% 
-% % Limite al salto maximo entre columnas para evitar picos no realistas
-% maxStepJump = 2*step;
-% for k = 2:N
-%     if y0(k) > y0(k-1) + maxStepJump
-%         y0(k) = y0(k-1) + maxStepJump;
-%     elseif y0(k) < y0(k-1) - maxStepJump
-%         y0(k) = y0(k-1) - maxStepJump;
-%     end
-% end
-% 
-% y0(idx_borde) = 0;
-
 %% Asignacion aleatoria de la masa del carro (Entorno)
 Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
 Mc_Xvect=randi([Mc_min, Mc_max], 1, N); %Generación de masas contenedores aleatoria entre Mc min y Mc max
@@ -336,7 +231,7 @@ T_s0=0.02;
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0;      %MODIFICABLE
-x_td_ini = -20;     %MODIFICABLE
+x_td_ini = -22;     %MODIFICABLE
 
 %En subs_tras_carro
 dx_t_ini=dx_td_ini;
@@ -346,7 +241,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=20;         %MODIFICABLE
+y_l_ini=12;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
@@ -358,128 +253,3 @@ l_h_ini=Yt0-y_l_ini;
 
 
 
-% %% Linealizacion Jacobiana 
-% 
-% syms s xt vt th w Ftw real
-% syms Mt_sym ml_sym l_sym bt_sym g_sym real
-% 
-% % Estados y entrada
-% x = [xt; vt; th; w];
-% u = Ftw;
-% 
-% % Definiciones auxiliares
-% Dx  = Mt_sym + ml_sym*sin(th)^2;
-% Nx = Ftw - bt_sym*vt + ml_sym*l_sym*w^2*sin(th) + ml_sym*g_sym*sin(th)*cos(th);
-% Nth = -(Mt_sym+ml_sym*sin(th)^2)*g_sym*sin(th)-cos(th)*(Ftw-bt_sym*vt+ml_sym*l_sym*w^2*sin(th)+ml_sym*g_sym*sin(th)*cos(th));
-% Dth = l_sym*(Mt_sym+ml_sym*sin(th)^2);
-% 
-% % Dinámica
-% f1 = vt;
-% f2 = Nx / Dx;
-% f3 = w;
-% f4 = Nth / Dth;
-% 
-% f = [f1; f2; f3; f4];
-% 
-% % Jacobianos
-% A = jacobian(f, x);
-% B = jacobian(f, u);
-% 
-% % (opcional) simplificación
-% A = simplify(A);
-% B = simplify(B);
-% 
-% % Modelo LPV evaluado en el punto de operacion
-% 
-% xt0 = 0;
-% w0 = 0;
-% Mt0 = M_x;
-% ml0 = Mc_X;
-% bt0 = btw;
-% g0 = g;
-% 
-% A0 = subs(A, {xt,w,Mt_sym,ml_sym,bt_sym,g_sym}, {xt0,w0,Mt0,ml0,bt0,g0});
-% B0 = subs(B, {xt,w}, {xt0,w0});
-% 
-% % Selección de salida y vector que representa la acción de delta-theta
-% C = [0 1 0 0];            % salida y = delta v_t
-% 
-% %Para encontrar la funcion de transferencia
-% SI_A0 = s*eye(4) - A0;
-% Gp = simplify( C * inv(SI_A0)* B(:,1));  % TF de la planta
-% 
-% %% Controlador de carro
-% syms Ktp Kti Ktd real
-% 
-% % Obtencion de Funcion de transferencia
-% Gct = Ktp+Kti/s+Ktd*s;
-% 
-% %% Controlador de balanceo
-% 
-% % Obtencion de Funcion de transferencia
-% syms Kp Kd real
-% 
-% Gc = Kp+Kd*s;
-% 
-% Gcb = (Gc+Gct)*Gp/(1+(Gc+Gct)*Gp);
-% Gcb = simplify(Gcb);
-% [~, denGcb] = numden(Gcb);
-% denGcb = simplify(denGcb);
-% 
-% %% Diseño por amortiguamiento crítico
-% % % Usamos una wn mayor a la de lazo abierto
-% wn = 1.5*8;
-% w_pos_cb = 10*wn;
-% 
-% % Polinomio dominante de segundo orden crítico
-% P_dom = s^2 + 2*wn*s + wn^2;
-% 
-% % Polos no dominantes (rápidos)
-% alpha = 5*wn;
-% beta = 6*wn;
-% P_des = expand(P_dom * (s + alpha) * (s + beta));
-% 
-% % Coeficientes del polinomio del lazo cerrado
-% coeffs_gcb=coeffs(denGcb, s, 'All');
-% 
-% % Coeficientes del polinomio del lazo cerrado
-% coeffs_des=coeffs(P_dom, s, 'All');
-% 
-% % % Igualación de coeficientes
-% % Pdiff = (expand(D_lc - D_des));
-% % coeffs_vec = coeffs(Pdiff, s);
-% % eqs = coeffs_vec == 0;
-% 
-% % % % Forma robusta: extraer polinomio en vector
-% % % [~,P_des_d] = numden(P_des);
-% % % poly_des = expand(P_des_d);
-% 
-% % % Igualación por coeficientes (grado 4 -> 5 ecuaciones)
-% % coeffs_lc = coeffs(P_lc,s,'All');
-% % coeffs_des = coeffs(P_des, s, 'All');
-% 
-% % alinear longitudes rellenando con ceros si es necesario
-% nL = length(coeffs_gcb); nD = length(coeffs_des);
-% n = max(nL, nD);
-% coeffs_gcb = [zeros(1,n-nL), coeffs_gcb];
-% coeffs_des = [zeros(1,n-nD), coeffs_des];
-% % 
-% % % formar sistema de ecuaciones (vectorial)
-% % eqs = coeffs_gcb - coeffs_des;
-% % eqs = simplify(eqs);           % ecuaciones simbólicas
-% 
-% Gcb_tranf = coeffs_gcb;
-% 
-% polin_sint_serie_cb = coeffs_des;
-% 
-% soluch = solve([Gcb_tranf==polin_sint_serie_cb], [Kp, Kd]);
-% 
-% Kp = double(soluch.Kp);
-% Kd = double(soluch.Kd);
-% 
-% % % Resolver simbólicamente Kp, Kd
-% % sol = solve(eqs==0, [Kp Kd]);
-% % 
-% % % recoger soluciones posibles
-% % Kp_sol = sol.Kp;
-% % Kd_sol = sol.Kd;
