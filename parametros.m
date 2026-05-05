@@ -213,7 +213,7 @@ T_s0=0.02;
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0;      %MODIFICABLE
-x_td_ini = -0;     %MODIFICABLE
+x_td_ini = -20;     %MODIFICABLE
 
 %En subs_tras_carro
 dx_t_ini=dx_td_ini;
