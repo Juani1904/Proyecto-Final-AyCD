@@ -336,7 +336,7 @@ T_s0=0.02;
 %% Condiciones Iniciales
 %En subs_acc_carro
 dx_td_ini = 0;      %MODIFICABLE
-x_td_ini = -20;     %MODIFICABLE
+x_td_ini = -0;     %MODIFICABLE
 
 %En subs_tras_carro
 dx_t_ini=dx_td_ini;
@@ -346,7 +346,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=40;         %MODIFICABLE
+y_l_ini=25;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
@@ -363,7 +363,7 @@ ke_int = w_obs^3;
 %%
 
 Kp_table = Kp_table.*0.5;
-Kd_table = Kd_table.*1.1;
+Kd_table = Kd_table.*1.5;
 % %% Linealizacion Jacobiana 
 % 
 % syms s xt vt th w Ftw real
