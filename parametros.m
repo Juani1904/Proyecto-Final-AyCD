@@ -231,13 +231,17 @@ l_h_ini=Yt0-y_l_ini;
 
 
 %% Observador
-w_obs = 1000;
+w_obs = 900;
 ke_tita = w_obs*3;
 ke_w = 3*w_obs^2;
 ke_int = w_obs^3;
-
+kpos = 0.09;
 
 %%
-
+load('at_breakpoints.mat');
+load('Kd_table.mat');
+load('Kp_table.mat');
+load('l_breakpoints.mat');
+load('ml_breakpoints.mat');
 Kp_table = Kp_table.*0.5;
-Kd_table = Kd_table.*1.5;
+Kd_table = Kd_table.*3;
