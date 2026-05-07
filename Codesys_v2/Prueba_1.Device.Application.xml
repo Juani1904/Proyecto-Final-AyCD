@@ -18,9 +18,11 @@
       <Node name="GVL">
         <Node name="aY_c0" type="T_ARRAY__0__32__OF_LREAL" access="ReadWrite" />
         <Node name="bBalanceo" type="T_BOOL" access="Read" />
-        <Node name="bBRK_h" type="T_BOOL" access="Read" />
-        <Node name="bBRK_hE" type="T_BOOL" access="Read" />
-        <Node name="bBRK_t" type="T_BOOL" access="Read" />
+        <Node name="bBRK_h_N0" type="T_BOOL" access="Read" />
+        <Node name="bBRK_h_N1" type="T_BOOL" access="Read" />
+        <Node name="bBRK_hE_N0" type="T_BOOL" access="Read" />
+        <Node name="bBRK_t_N0" type="T_BOOL" access="Read" />
+        <Node name="bBRK_t_N1" type="T_BOOL" access="Read" />
         <Node name="bFC_DER" type="T_BOOL" access="Write" />
         <Node name="bFC_INF" type="T_BOOL" access="Write" />
         <Node name="bFC_IZQ" type="T_BOOL" access="Write" />
@@ -30,12 +32,6 @@
         <Node name="bFCE_IZQ" type="T_BOOL" access="Write" />
         <Node name="bFCE_SUP" type="T_BOOL" access="Write" />
         <Node name="bTLK" type="T_BOOL" access="Read" />
-        <Node name="fAccVisX" type="T_LREAL" access="Read" />
-        <Node name="fAccVisY" type="T_LREAL" access="Read" />
-        <Node name="fPosVisX" type="T_LREAL" access="Read" />
-        <Node name="fPosVisY" type="T_LREAL" access="Read" />
-        <Node name="fVelVisX" type="T_LREAL" access="Read" />
-        <Node name="fVelVisY" type="T_LREAL" access="Read" />
         <Node name="iC" type="T_DINT" access="Read" />
         <Node name="pBAL_ON" type="T_BOOL" access="Write" />
         <Node name="pP_EM" type="T_BOOL" access="ReadWrite" />
@@ -51,6 +47,7 @@
         <Node name="rDXt_ref_man" type="T_LREAL" access="Write" />
         <Node name="rFhw" type="T_LREAL" access="Write" />
         <Node name="rLh" type="T_LREAL" access="Write" />
+        <Node name="rLh_ref" type="T_LREAL" access="Write" />
         <Node name="rMl" type="T_LREAL" access="Write" />
         <Node name="rMl_estimada" type="T_LREAL" access="Read" />
         <Node name="rThm_disp" type="T_LREAL" access="Write" />
@@ -60,6 +57,7 @@
         <Node name="rWhm_ant" type="T_LREAL" access="Write" />
         <Node name="rWtm" type="T_LREAL" access="Write" />
         <Node name="rWtm_ant" type="T_LREAL" access="Write" />
+        <Node name="rXt_ref" type="T_LREAL" access="Read" />
         <Node name="rXtd" type="T_LREAL" access="Write" />
         <Node name="rYc0_xt" type="T_LREAL" access="Write" />
       </Node>
