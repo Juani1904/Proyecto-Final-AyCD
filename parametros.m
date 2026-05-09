@@ -159,7 +159,7 @@ l_vec  = linspace(5,45,10);
 vt_vec = linspace(0,vt_max,10);
 at_vec = linspace(-at_max,at_max,10);
 
-% GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
+GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
@@ -235,13 +235,14 @@ w_obs = 900;
 ke_tita = w_obs*3;
 ke_w = 3*w_obs^2;
 ke_int = w_obs^3;
-kpos = 0.09;
+
+%kp_pos = 1.2*1/0.25;
+kp_pos = 0.1;
 
 %%
-load('at_breakpoints.mat');
-load('Kd_table.mat');
-load('Kp_table.mat');
-load('l_breakpoints.mat');
-load('ml_breakpoints.mat');
-Kp_table = Kp_table.*0.5;
-Kd_table = Kd_table.*3;
+% load('at_breakpoints.mat');
+% load('Kd_table.mat');
+% load('Kp_table.mat');
+% load('l_breakpoints.mat');
+% load('ml_breakpoints.mat');
+
