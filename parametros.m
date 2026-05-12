@@ -1,3 +1,4 @@
+clear, clc
 %Añado los paths de las funciones
 addpath("Control_Balanceo\")
 %SCRIPT de almacenamiento de parametros -  Propiedades fisicas del sistema
@@ -159,11 +160,15 @@ l_vec  = linspace(5,45,10);
 vt_vec = linspace(0,vt_max,10);
 at_vec = linspace(-at_max,at_max,10);
 
-% GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
+%GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
 
+%% --------------------------------------------CN2 - CONTROL POSICION ------------------------------------------------
+n = 2.5;
+kp_pos = 0.15;
+kp_w = n * kp_pos;
 
 %% CN1 - CONTROL SUPERVISOR
 
@@ -231,13 +236,37 @@ l_h_ini=Yt0-y_l_ini;
 
 
 %% Observador
-w_obs = 900;
-ke_tita = w_obs*3;
-ke_w = 3*w_obs^2;
-ke_int = w_obs^3;
+% w_obs = 900;
+% ke_tita = w_obs*3;
+% ke_w = 3*w_obs^2;
+% ke_int = w_obs^3;
 
-%kp_pos = 1.2*1/0.25;
-kp_pos = 0.1;
+A = [0           1
+     0 -b_eqt/(J_eqt-Ms-M_x)];
+Bc = [0
+      it/(J_eqt*rtd)];
+Bd = -rtd*Bc;
+C = [1 0];
+D = 0;
+
+sist = ss(A,Bc,C,D);
+H_sist = tf(sist)
+
+syms Ktita Komega s
+K = [Ktita
+    Komega];
+
+A_prima = A - K*C;
+
+I = eye(2);
+
+p_obs = expand(det(s*I-A_prima))
+
+p_des = expand((s+60)^2)
+
+Ke_tita = 120;
+Ke_w = 3600;
+
 
 %%
 load('at_breakpoints.mat');
