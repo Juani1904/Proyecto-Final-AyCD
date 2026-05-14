@@ -160,7 +160,7 @@ l_vec  = linspace(5,45,10);
 vt_vec = linspace(0,vt_max,10);
 at_vec = linspace(-at_max,at_max,10);
 
-%GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
+% GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
