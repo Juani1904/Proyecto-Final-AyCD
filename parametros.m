@@ -262,12 +262,17 @@ I = eye(2);
 
 p_obs = expand(det(s*I-A_prima))
 
-p_des = expand((s+60)^2)
+p_des = expand((s+100)*(s+110))
 
-Ke_tita = 120;
-Ke_w = 3600;
+Ke_tita = 209.27;
+Ke_w = 10849.27;
 
-
+%%
+% y0_global = Simulink.Signal;
+% y0_global.DataType = 'double'; % Asegúrate que coincida con tu bloque
+% y0_global.Dimensions = [1 33]; % Según veo en tu captura (<1x33 double>)
+% y0_global.Complexity = 'real';
+% y0_global.StorageClass = 'ExportedGlobal'; % Importante para que el PLC lo vea
 %%
 load('at_breakpoints.mat');
 load('Kd_table.mat');
