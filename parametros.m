@@ -228,7 +228,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=6;         %MODIFICABLE
+y_l_ini=20;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
