@@ -112,8 +112,7 @@ roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+
 J_eqh = (1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);  
 b_eqh = (1/rhd)*(2*bhd+2*bhm*(ih)^2);
 
-%coef_h = [-(1/ih)*(J_eqh+M_x*rhd/2); -b_eqh/ih; 0]
-coef_h = [-(1/ih)*(J_eqh); -b_eqh/ih; 0];
+coef_h = [-(1/ih)*(J_eqh+M_x*rhd/2); -b_eqh/ih; 0];
 polos_h = roots(coef_h);
 
 w_pos_h = 10*polos_h(2);
@@ -229,7 +228,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=25;         %MODIFICABLE
+y_l_ini=20;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
