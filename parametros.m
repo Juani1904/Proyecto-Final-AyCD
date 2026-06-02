@@ -154,13 +154,13 @@ w0   = 0;
 %Ftw0 = 0;
 
 
-ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,8);
+ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,100);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
-l_vec  = linspace(5,45,10);
-vt_vec = linspace(0,vt_max,10);
-at_vec = linspace(-at_max,at_max,10);
+l_vec  = linspace(0,45,30);
+vt_vec = linspace(0,vt_max,30);
+at_vec = linspace(-at_max,at_max,30);
 
-% GS = preparar_gain_scheduling_lookup(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
+GS = preparar_gain_scheduling_lookup_V2(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
 
 %[Kp,Kd,A0,B0,Gp_sym,Pdes_sym,Plc_sym] = jacob_gs(xt0,vt0,th0,w0,Ftw0,Mt0,2000,10,bt0,g0);
@@ -274,9 +274,9 @@ Ke_w = 10849.27;
 % y0_global.Complexity = 'real';
 % y0_global.StorageClass = 'ExportedGlobal'; % Importante para que el PLC lo vea
 %%
-load('at_breakpoints.mat');
-load('Kd_table.mat');
-load('Kp_table.mat');
-load('l_breakpoints.mat');
-load('ml_breakpoints.mat');
+%load('at_breakpoints.mat');
+%load('Kd_table.mat');
+%load('Kp_table.mat');
+%load('l_breakpoints.mat');
+%load('ml_breakpoints.mat');
 
