@@ -1,4 +1,4 @@
-function GS = preparar_gain_scheduling_lookup( ...
+function GS = preparar_gain_scheduling_lookup_V2( ...
     xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0,aplicar_suavizado)
 
 if nargin < 11
@@ -6,24 +6,24 @@ if nargin < 11
 end
 
 %% 1) Generar matrices crudas
-[Kp_raw, Kd_raw] = generar_matrices_jacob( ...
+[Kp_raw, Kd_raw] = generar_matrices_jacob_V2( ...
     xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0);
 
-%% 2) Rellenar NaN
-Kp_fill = rellenar_nan_matriz(Kp_raw);
-Kd_fill = rellenar_nan_matriz(Kd_raw);
-% Ki_fill = rellenar_nan_matriz(Ki_raw);
-
-%% 3) Suavizado opcional
-if aplicar_suavizado
-    Kp_use = suavizar_matriz(Kp_fill);
-    Kd_use = suavizar_matriz(Kd_fill);
-    % Ki_use = suavizar_matriz(Ki_fill);
-else
-    Kp_use = Kp_fill;
-    Kd_use = Kd_fill;
-    % Ki_use = Ki_fill;
-end
+% %% 2) Rellenar NaN
+% Kp_fill = rellenar_nan_matriz(Kp_raw);
+% Kd_fill = rellenar_nan_matriz(Kd_raw);
+% % Ki_fill = rellenar_nan_matriz(Ki_raw);
+% 
+% %% 3) Suavizado opcional
+% if aplicar_suavizado
+%     Kp_use = suavizar_matriz(Kp_fill);
+%     Kd_use = suavizar_matriz(Kd_fill);
+%     % Ki_use = suavizar_matriz(Ki_fill);
+% else
+%     Kp_use = Kp_fill;
+%     Kd_use = Kd_fill;
+%     % Ki_use = Ki_fill;
+% end
 
 %% 4) Guardar en estructura
 GS = struct();
@@ -32,14 +32,14 @@ GS.l_vec   = l_vec(:);
 GS.vt_vec   = vt_vec(:);
 GS.at_vec   = at_vec(:);
 
-GS.Kp_raw  = Kp_raw;
-GS.Kd_raw  = Kd_raw;
-% GS.Ki_raw  = Ki_raw;
-GS.Kp_fill = Kp_fill;
-GS.Kd_fill = Kd_fill;
-% GS.Ki_fill = Ki_fill;
-GS.Kp      = Kp_use;
-GS.Kd      = Kd_use;
+% GS.Kp_raw  = Kp_raw;
+% GS.Kd_raw  = Kd_raw;
+% % GS.Ki_raw  = Ki_raw;
+% GS.Kp_fill = Kp_fill;
+% GS.Kd_fill = Kd_fill;
+% % GS.Ki_fill = Ki_fill;
+GS.Kp      = Kp_raw;
+GS.Kd      = Kd_raw;
 % GS.Ki      = Ki_use;
 
 %% 5) Variables listas para Simulink

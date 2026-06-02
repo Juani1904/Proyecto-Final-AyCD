@@ -1,4 +1,4 @@
-function [Kp_mat, Kd_mat] = generar_matrices_jacob( ...
+function [Kp_mat, Kd_mat] = generar_matrices_jacob_V2( ...
     xt0,vt_vec,at_vec,w0,Mt0,ml_vec,l_vec,bt0,g0)
 
 nml = length(ml_vec);
@@ -21,7 +21,7 @@ for i = 1:nml
             for l = 1:nat
                 at0 = at_vec(l);
                 try
-                    [Kp, Kd] = jacob_gs(xt0,vt0,at0,w0,Mt0,ml0,l0,bt0,g0);
+                    [Kp, Kd] = jacob_gs_V2(xt0,vt0,at0,w0,Mt0,ml0,l0,bt0,g0);
         
                     % Kp_mat(i,j,k,l) = Kp;
                     % Kd_mat(i,j,k,l) = Kd;
