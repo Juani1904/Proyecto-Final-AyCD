@@ -250,7 +250,7 @@ C = [1 0];
 D = 0;
 
 sist = ss(A,Bc,C,D);
-H_sist = tf(sist)
+H_sist = tf(sist);
 
 syms Ktita Komega s
 K = [Ktita

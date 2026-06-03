@@ -9,28 +9,31 @@ nat = length(at_vec);
 Kp_mat = NaN(nml,nl);
 Kd_mat = NaN(nml,nl);
 % Ki_mat = NaN(nml,nl);
+it=30;
+rtd=0.5;
 
 for i = 1:nml
     ml0 = ml_vec(i);
     %ml0=15000;
     for j = 1:nl
         l0  = l_vec(j);
-        %for k = 1:nvt
-            %vt0 = vt_vec(k);
-            vt0 = 0;
+        for k = 1:nvt
+            vt0 = vt_vec(k);
+            w0 = vt_vec(k)*it/rtd;
+            %vt0 = 0;
             for l = 1:nat
                 at0 = at_vec(l);
                 try
                     [Kp, Kd] = jacob_gs_V2(xt0,vt0,at0,w0,Mt0,ml0,l0,bt0,g0);
         
-                    % Kp_mat(i,j,k,l) = Kp;
-                    % Kd_mat(i,j,k,l) = Kd;
-                     Kp_mat(i,j,l) = Kp;
-                     Kd_mat(i,j,l) = Kd;
-                     % Ki_mat(j,l) = Ki;
+                     Kp_mat(i,j,k,l) = Kp;
+                     Kd_mat(i,j,k,l) = Kd;
+                     %Kp_mat(i,j,l) = Kp;
+                     %Kd_mat(i,j,l) = Kd;
+                     %Ki_mat(j,l) = Ki;
 
                     fprintf('ml=%.3f, l=%.3f, vt=%.3f, at=%.3f -> Kp=%.6f, Kd=%.6f\n', ...
-                        ml0, l0,vt0, at0, Kp, Kd);
+                        ml0, l0, vt0, at0, Kp, Kd);
         
                 catch ME
                     warning('Falló cálculo para ml = %.3f, l = %.3f, vt=%.3f, at=%.3f. Motivo: %s', ...
@@ -38,7 +41,7 @@ for i = 1:nml
                 end
                 
             end
-        %end
+        end
         
         
     end
