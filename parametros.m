@@ -90,8 +90,8 @@ b_eqt = btm*it^2/rtd^2 + btd/rtd^2;
 coef_t = [rtd*(J_eqt+Mt)/it; rtd*(b_eqt+bt)/it; 0];
 polos_t = roots(coef_t)
 
-w_pos_t = 10*polos_t(2)
-n_t = 2.9;
+w_pos_t = 5*polos_t(2)
+n_t = 2.5;
 
 a = (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it);
 b = K_tsa/(rtd*(Mt+J_eqt)/it);
@@ -154,11 +154,11 @@ w0   = 0;
 %Ftw0 = 0;
 
 
-ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,100);
+ml_vec = linspace(Ms+Mc_min,Ms+Mc_max,3);
 ml_vec = [Ms,ml_vec]; %Se explicita que el primer valor de Ml debe ser el escenario para spreader vacio, masa Ms
-l_vec  = linspace(0,45,30);
-vt_vec = linspace(0,vt_max,30);
-at_vec = linspace(-at_max,at_max,30);
+l_vec  = linspace(0,45,50);
+vt_vec = linspace(0,vt_max,50);
+at_vec = linspace(-at_max,at_max,50);
 
 GS = preparar_gain_scheduling_lookup_V2(xt0,vt_vec,at_vec,w0,Mt,ml_vec,l_vec,bt,g,true);
 
