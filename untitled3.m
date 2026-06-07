@@ -54,14 +54,14 @@ tita_real_amplitud = out.tita_real.Data;
 tita_real_data = [tita_real_tiempo, tita_real_amplitud];
 
 
-writematrix(xt_ref_data, 'xt_ref_simulacion.csv');
-writematrix(x_t_real_data, 'x_t_real_simulacion.csv');
-writematrix(lh_ref_data, 'lh_ref_simulacion.csv');
-writematrix(l_h_real_data, 'l_h_real_simulacion.csv');
-writematrix(dxt_ref_data, 'dxt_ref_simulacion.csv');
-writematrix(dx_t_real_data, 'dx_t_real_simulacion.csv');
-writematrix(dlh_ref_data, 'dlh_ref_simulacion.csv');
-writematrix(dl_h_real_data, 'dl_h_real_simulacion.csv');
-writematrix(ddxt_ref_data, 'ddxt_ref_simulacion.csv');
-writematrix(tita_ref_data, 'tita_ref_simulacion.csv');
-writematrix(tita_real_data, 'tita_real_simulacion.csv');
+writematrix(xt_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\xt_ref_simulacion.csv');
+writematrix(x_t_real_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\x_t_real_simulacion.csv');
+writematrix(lh_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\lh_ref_simulacion.csv');
+writematrix(l_h_real_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\l_h_real_simulacion.csv');
+writematrix(dxt_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\dxt_ref_simulacion.csv');
+writematrix(dx_t_real_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\dx_t_real_simulacion.csv');
+writematrix(dlh_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\dlh_ref_simulacion.csv');
+writematrix(dl_h_real_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\dl_h_real_simulacion.csv');
+writematrix(ddxt_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\ddxt_ref_simulacion.csv');
+writematrix(tita_ref_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\tita_ref_simulacion.csv');
+writematrix(tita_real_data, 'C:\Users\juani\OneDrive\Escritorio\Analisis graficas proyectos\CSV\tita_real_simulacion.csv');
