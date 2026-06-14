@@ -63,13 +63,37 @@ at_max = 0.8;
 
 %-----------------------------------------------DATOS AGREGADOS----------------------------------------------------------------------
 %% Perfil de obstaculos (Entorno)
-N=ceil(80/Wc);
-dmax=ceil(Yt0/4); %Altura maxima de apilado (Asumida)
-step = Hc; %Paso de apilado
-valores = 0:step:dmax; %Posibles valores de 0 a dmax, con paso step
-y0 = valores(randi(numel(valores),1,N)); %Vector de perfil de obstaculos
-y0(15)=5; %Setea en cero la altura correspondiente al borde entre el agua y el muelle
 
+N = ceil(80/Wc);              % Cantidad de puntos del perfil
+dmax_agua = 5*Hc;      % Altura maxima de apilado en agua
+dmax_muelle = 2*Hc;    % Altura maxima de apilado en muelle
+
+step = Hc;                    % Paso de apilado
+
+valores_agua = 0:step:dmax_agua;
+valores_muelle = 0:step:dmax_muelle;
+
+% Índice correspondiente al borde entre muelle y agua
+idx_borde = 15;
+
+% Altura del borde entre agua y muelle
+altura_borde = 5;
+
+% Cantidad de puntos de cada zona
+N_muelle = idx_borde - 1;
+N_agua = N - idx_borde;
+
+% Inicialización del perfil
+y0 = zeros(1,N);
+
+% Zona de muelle
+y0(1:N_muelle) = valores_muelle(randi(numel(valores_muelle),1,N_muelle));
+
+% Borde entre muelle y agua
+y0(idx_borde) = altura_borde;
+
+% Zona de agua
+y0(idx_borde+1:end) = valores_agua(randi(numel(valores_agua),1,N_agua));
 
 %% Asignacion aleatoria de la masa del carro (Entorno)
 Mc_X=randi([Mc_min,Mc_max]); %Este valor mas adelante va a desaparecer
@@ -228,7 +252,7 @@ x_t_ini=x_td_ini;
 dx_l_ini=0;         %MODIFICABLE
 x_l_ini=x_td_ini;   
 dy_l_ini=0;         %MODIFICABLE
-y_l_ini=15;         %MODIFICABLE
+y_l_ini=y0(ceil((x_td_ini+30)/Wc))+5;         %MODIFICABLE
 
 %En acc_izaje
 dl_h_ini=dy_l_ini;
