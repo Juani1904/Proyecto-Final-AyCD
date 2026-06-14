@@ -114,46 +114,48 @@ b_eqt = btm*it^2/rtd^2 + btd/rtd^2;
 coef_t = [rtd*(J_eqt+Mt)/it; rtd*(b_eqt+bt)/it; 0];
 polos_t = roots(coef_t)
 
-w_pos_t = 2*polos_t(2)
+f_wpost=2;
+w_pos_t = f_wpost*polos_t(2);
 n_t = 2.9;
 
-a = (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it);
-b = K_tsa/(rtd*(Mt+J_eqt)/it);
-c = K_tsia/(rtd*(Mt+J_eqt)/it);
-Gt_tranf = [a b c];
-polin_sint_serie_t = [n_t*w_pos_t  n_t*w_pos_t^2  w_pos_t^3];
-
-soluct = solve([Gt_tranf==polin_sint_serie_t], [b_ta, K_tsa, K_tsia]);
-b_ta = -double(soluct.b_ta)
-K_tsa = double(soluct.K_tsa)
-K_tsia = -double(soluct.K_tsia)
-
-roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+J_eqt)/it); K_tsia/(rtd*(Mt+J_eqt)/it)])
+% a = (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it);
+% b = K_tsa/(rtd*(Mt+J_eqt)/it);
+% c = K_tsia/(rtd*(Mt+J_eqt)/it);
+% Gt_tranf = [a b c];
+% polin_sint_serie_t = [n_t*w_pos_t  n_t*w_pos_t^2  w_pos_t^3];
+% 
+% soluct = solve([Gt_tranf==polin_sint_serie_t], [b_ta, K_tsa, K_tsia]);
+% b_ta = -double(soluct.b_ta)
+% K_tsa = double(soluct.K_tsa)
+% K_tsia = -double(soluct.K_tsia)
+% 
+% roots([1; (rtd*bt/it + rtd*b_eqt/it + b_ta)/(rtd*(Mt+J_eqt)/it); K_tsa/(rtd*(Mt+J_eqt)/it); K_tsia/(rtd*(Mt+J_eqt)/it)])
 
 
 % ------------------------------------------------CN2 - CONTROLADOR DE MOVIMIENTO IZAJE -------------------------------
 
-J_eqh = (1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);  
-b_eqh = (1/rhd)*(2*bhd+2*bhm*(ih)^2);
+% J_eqh = (1/rhd)*(2*Jhd_hEb+2*Jhm_hb*(ih)^2);  
+% b_eqh = (1/rhd)*(2*bhd+2*bhm*(ih)^2);
+% 
+% coef_h = [-(1/ih)*(J_eqh+M_x*rhd/2); -b_eqh/ih; 0];
+% polos_h = roots(coef_h);
 
-coef_h = [-(1/ih)*(J_eqh+M_x*rhd/2); -b_eqh/ih; 0];
-polos_h = roots(coef_h);
-
-w_pos_h = 10*polos_h(2);
+f_wposh=10;
+%w_pos_h = f_wposh*polos_h(2);
 n_h = 2;
 
-d = ih*(b_eqh/ih - b_ha)/(rhd*M_x/2+J_eqh);
-e = -K_hsa*ih/(rhd*M_x/2+J_eqh);
-f = -K_hsia*ih/(rhd*M_x+J_eqh);
-Gh_tranf = [d e f];
-polin_sint_serie_h = [n_h*w_pos_h  n_h*w_pos_h^2  w_pos_h^3];
-
-soluch = solve([Gh_tranf==polin_sint_serie_h], [b_ha, K_hsa, K_hsia]);
-b_ha = -double(soluch.b_ha);
-K_hsa = double(soluch.K_hsa);
-K_hsia = -double(soluch.K_hsia);
-
-roots([1; ih*((b_eqh/ih) - b_ha)/((rhd*M_x/2)+J_eqh); -K_hsa*ih/((rhd*M_x/2)+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)]);
+% d = ih*(b_eqh/ih - b_ha)/(rhd*M_x/2+J_eqh);
+% e = -K_hsa*ih/(rhd*M_x/2+J_eqh);
+% f = -K_hsia*ih/(rhd*M_x+J_eqh);
+% Gh_tranf = [d e f];
+% polin_sint_serie_h = [n_h*w_pos_h  n_h*w_pos_h^2  w_pos_h^3];
+% 
+% soluch = solve([Gh_tranf==polin_sint_serie_h], [b_ha, K_hsa, K_hsia]);
+% b_ha = -double(soluch.b_ha);
+% K_hsa = double(soluch.K_hsa);
+% K_hsia = -double(soluch.K_hsia);
+% 
+% roots([1; ih*((b_eqh/ih) - b_ha)/((rhd*M_x/2)+J_eqh); -K_hsa*ih/((rhd*M_x/2)+J_eqh); -K_hsia*ih/(rhd*M_x+J_eqh)]);
 
 
 % --------------------------------CN2 - MODULADOR DE TORQUE EQUIVALENTE - MOTOR DRIVE IZAJE -------------------------
