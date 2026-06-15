@@ -268,7 +268,7 @@ l_h_ini=Yt0-y_l_ini;
 % ke_int = w_obs^3;
 
 A = [0           1
-     0 -b_eqt/(J_eqt-Ms-M_x)];
+     0 -b_eqt/(J_eqt)];
 Bc = [0
       it/(J_eqt*rtd)];
 Bd = -rtd*Bc;
@@ -286,12 +286,15 @@ A_prima = A - K*C;
 
 I = eye(2);
 
-p_obs = expand(det(s*I-A_prima))
+p_obs_sym = expand(det(s*I-A_prima))
+p_obs = coeffs(p_obs_sym,s);
+p_des_sym = expand((s+100)*(s+110))
+p_des = coeffs(p_des_sym,s);
 
-p_des = expand((s+100)*(s+110))
+soluc_obs = solve([p_obs==p_des], [Ktita, Komega]);
 
-Ke_tita = 209.27;
-Ke_w = 10849.27;
+Ke_tita = double(soluc_obs.Ktita)
+Ke_w = double(soluc_obs.Komega)
 
 %%
 % y0_global = Simulink.Signal;
