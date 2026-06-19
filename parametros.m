@@ -1,6 +1,6 @@
 clear, clc
 %Añado los paths de las funciones
-addpath("Control_Balanceo\")
+addpath("Control_Balanceo_V2\")
 %SCRIPT de almacenamiento de parametros -  Propiedades fisicas del sistema
 syms b_ta K_tsa K_tsia b_ha K_hsa K_hsia
 %-----------------------------------------------DATOS CONSIGNA----------------------------------------------------------------------
